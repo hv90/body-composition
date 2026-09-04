@@ -1,0 +1,159 @@
+/* Mobile-first. Todas as medidas partem do celular; o desktop é um acréscimo. */
+:root {
+  --fundo: #0A0E14;
+  --cartao: #131A24;
+  --cartao2: #0F151E;
+  --borda: #232E3D;
+  --texto: #E6EDF3;
+  --fraco: #8B98A8;
+  --tenue: #5B6B7D;
+  --gordura: #F2994A;
+  --musculo: #2DD4BF;
+  --bom: #34D399;
+  --ruim: #F87171;
+  --alerta: #FBBF24;
+  --raio: 16px;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+#root { max-width: 620px; margin: 0 auto; }
+
+/* ---------- topo ---------- */
+.topo {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: baseline; gap: 8px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-top, 0px));
+  background: rgba(10,14,20,0.86);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--borda);
+}
+.topo b { font-size: 15px; letter-spacing: .2px; }
+.topo span { font-size: 11px; color: var(--tenue); margin-left: auto; }
+
+/* ---------- secoes ---------- */
+.sec { padding: 26px 14px 6px; }
+.sec + .sec { border-top: 1px solid rgba(35,46,61,.5); }
+
+.olho {
+  font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--tenue); margin: 0 2px 6px;
+}
+.titulo { font-size: 19px; line-height: 1.25; margin: 0 2px 4px; font-weight: 650; }
+.legenda { font-size: 12.5px; line-height: 1.45; color: var(--fraco); margin: 0 2px 14px; }
+.legenda b { color: var(--texto); font-weight: 600; }
+
+.cartao {
+  background: var(--cartao);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  overflow: hidden;
+}
+.cartao + .cartao { margin-top: 10px; }
+.chart { width: 100%; }
+
+/* ---------- números grandes ---------- */
+.heroNum {
+  display: flex; align-items: baseline; gap: 8px;
+  margin: 2px 2px 2px;
+}
+.heroNum .v {
+  font-size: 58px; font-weight: 700; letter-spacing: -.03em; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.heroNum .u { font-size: 19px; color: var(--fraco); font-weight: 600; }
+
+.grade { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 12px; }
+.grade.tres { grid-template-columns: repeat(3, 1fr); }
+.tile {
+  background: var(--cartao); border: 1px solid var(--borda);
+  border-radius: 13px; padding: 11px 12px;
+}
+.tile .rot { font-size: 10.5px; color: var(--tenue); letter-spacing: .04em; text-transform: uppercase; }
+.tile .val {
+  font-size: 22px; font-weight: 680; margin-top: 3px; letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+.tile .sub { font-size: 11px; color: var(--fraco); margin-top: 2px; }
+
+.bom { color: var(--bom); }
+.ruim { color: var(--ruim); }
+.alerta { color: var(--alerta); }
+.corGordura { color: var(--gordura); }
+.corMusculo { color: var(--musculo); }
+
+/* ---------- controles ---------- */
+.controles {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  padding: 10px 12px; border-bottom: 1px solid var(--borda);
+  background: var(--cartao2);
+}
+.pil {
+  appearance: none; border: 1px solid var(--borda); background: transparent;
+  color: var(--fraco); font-size: 12px; font-weight: 600;
+  padding: 7px 12px; border-radius: 999px; cursor: pointer;
+  font-family: inherit; min-height: 34px;
+}
+.pil[data-on="1"] { background: rgba(45,212,191,.13); border-color: rgba(45,212,191,.45); color: var(--musculo); }
+.pil[data-on="1"][data-cor="gordura"] { background: rgba(242,153,74,.13); border-color: rgba(242,153,74,.45); color: var(--gordura); }
+
+.faixaData { padding: 12px 14px 4px; }
+.faixaData input[type=range] {
+  width: 100%; accent-color: var(--musculo); height: 26px;
+}
+.faixaData .marcas {
+  display: flex; justify-content: space-between;
+  font-size: 10px; color: var(--tenue); margin-top: -2px;
+}
+.faixaData .atual { font-size: 13px; font-weight: 650; color: var(--texto); }
+
+/* ---------- painel duplo dos dois momentos ---------- */
+.duo { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.painel { background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--raio); overflow: hidden; }
+.painel .cab { padding: 12px 14px 4px; }
+.painel .cab .quando { font-size: 11px; color: var(--tenue); letter-spacing: .05em; text-transform: uppercase; }
+.painel .cab .balanca { font-size: 27px; font-weight: 700; letter-spacing: -.02em; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.painel .cab .balanca small { font-size: 12px; color: var(--fraco); font-weight: 500; margin-left: 5px; letter-spacing: 0; text-transform: none; }
+.rodape {
+  padding: 10px 14px 13px; font-size: 12px; line-height: 1.45;
+  color: var(--fraco);
+}
+.painel .rodape { border-top: 1px solid rgba(35,46,61,.6); font-size: 12.5px; }
+.painel .rodape b { display: block; font-size: 13.5px; margin-bottom: 2px; }
+
+/* ---------- aviso da medição inválida ---------- */
+.aviso {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: rgba(248,113,113,.07);
+  border: 1px solid rgba(248,113,113,.3);
+  border-radius: 13px; padding: 11px 13px; margin-top: 10px;
+}
+.aviso .mk { font-size: 15px; line-height: 1.2; }
+.aviso .tx { font-size: 12.5px; line-height: 1.45; color: var(--fraco); }
+.aviso .tx b { color: var(--texto); }
+
+.chaveValor { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; font-size: 12.5px; margin-top: 10px; }
+.chaveValor .k { color: var(--fraco); }
+.chaveValor .v { font-variant-numeric: tabular-nums; text-align: right; }
+
+.rodapePagina {
+  padding: 26px 16px calc(34px + env(safe-area-inset-bottom, 0px));
+  font-size: 11px; line-height: 1.6; color: var(--tenue);
+  border-top: 1px solid rgba(35,46,61,.5); margin-top: 20px;
+}
+
+@media (min-width: 560px) {
+  .sec { padding: 32px 20px 8px; }
+  .titulo { font-size: 22px; }
+  .duo { grid-template-columns: 1fr 1fr; }
+  .heroNum .v { font-size: 68px; }
+}
