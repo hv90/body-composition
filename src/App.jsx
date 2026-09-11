@@ -7,7 +7,8 @@ import SinaisInternos from './sections/SinaisInternos.jsx'
 import Rota from './sections/Rota.jsx'
 import MedicaoInvalida from './sections/MedicaoInvalida.jsx'
 import Sinais from './sections/Sinais.jsx'
-import { RESUMO } from './lib/derivar.js'
+import { RESUMO, primeira, ultima } from './lib/derivar.js'
+import { dataBR } from './lib/fmt.js'
 
 export default function App() {
   return (
@@ -30,8 +31,9 @@ export default function App() {
       </main>
 
       <footer className="rodapePagina">
-        Dados transcritos de 7 laudos Fitdays de análise de composição corporal,
-        de 23/07/2026 a 03/09/2026. Bioimpedância estima a composição do corpo,
+        Dados transcritos de {RESUMO.medicoes} laudos Fitdays de análise de composição
+        corporal, de {dataBR(primeira.data)} a {dataBR(ultima.data)}. Bioimpedância
+        estima a composição do corpo,
         ela não mede diretamente. Hidratação, horário e alimentação mexem no
         resultado, então o que vale é a tendência, não a casa decimal de um dia.
       </footer>

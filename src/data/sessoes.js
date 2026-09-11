@@ -124,6 +124,21 @@ export const SESSOES = [
     musculoSegPerc: { bracoE: 96.2,  bracoD: 94.3,  tronco: 93.5,  pernaE: 97.9,  pernaD: 97.7 },
     z20:  { bracoD: 392.1, bracoE: 380.1, tronco: 21.6, pernaD: 273.6, pernaE: 269.9 },
     z100: { bracoD: 354.9, bracoE: 342.3, tronco: 16.4, pernaD: 244.4, pernaE: 242.6 }
+  },
+  {
+    data: '2026-09-11', rotulo: '11/set', hora: '13:04', idLaudo: 'perfil B',
+    alturaRelatada: 152, composicaoValida: true,
+    peso: 65.4, gordura: 26.3, ossea: 2.6, proteica: 7.8, agua: 28.6,
+    muscular: 36.4, esqueletico: 21.3,
+    pontuacao: 67, imc: 28.3, percGordura: 40.2, obesidadePerc: 134,
+    pesoAlvo: 50.4, visceral: 11, tmb: 1214, livreGordura: 39.0,
+    subcutanea: 28.6, smi: 7.0, idadeCorporal: 67, whr: 0.86,
+    gorduraSeg:     { bracoE: 1.8,   bracoD: 1.9,   tronco: 14.1,  pernaE: 4.0,   pernaD: 4.0 },
+    gorduraSegPerc: { bracoE: 216.3, bracoD: 219.6, tronco: 307.9, pernaE: 195.7, pernaD: 195.2 },
+    musculoSeg:     { bracoE: 1.9,   bracoD: 1.9,   tronco: 16.9,  pernaE: 6.2,   pernaD: 6.2 },
+    musculoSegPerc: { bracoE: 94.7,  bracoD: 92.5,  tronco: 92.5,  pernaE: 96.9,  pernaD: 96.7 },
+    z20:  { bracoD: 397.2, bracoE: 384.2, tronco: 22.1, pernaD: 281.0, pernaE: 281.8 },
+    z100: { bracoD: 359.4, bracoE: 345.7, tronco: 17.1, pernaD: 251.7, pernaE: 253.7 }
   }
 ]
 

@@ -1,6 +1,6 @@
 # Composicao corporal em graficos
 
-Sete laudos de bioimpedancia (Fitdays), de 23/07/2026 a 03/09/2026, virados em uma
+Oito laudos de bioimpedancia (Fitdays), de 23/07/2026 a 11/09/2026, virados em uma
 pagina de graficos ECharts. Mobile-first: tudo foi desenhado para 375 px de largura
 primeiro, e o desktop apenas se acomoda.
 
@@ -28,6 +28,24 @@ O eixo da pagina. Duas vezes a balanca andou menos de meio quilo, por motivos op
 Mesma leitura, sinal trocado. `src/lib/derivar.js` marca esses intervalos sozinho
 (`quaseParada`, `|dPeso| < 0.5`), sem lista fixa: se entrarem novas medicoes, o
 destaque se move junto.
+
+## A gordura parada
+
+`GORDURA_PARADA` em `src/lib/derivar.js` conta quantas medicoes validas no fim da
+serie repetem o mesmo valor de gordura, e o que o peso e o musculo fizeram nesse
+intervalo. Em 11/09 sao **3 medicoes** paradas em 26,3 kg desde 28/08: a balanca
+caiu 0,9 kg e o musculo caiu 0,9 kg, entao o percentual de gordura SUBIU enquanto
+ela emagrecia.
+
+O titulo da abertura e o aviso saem dessa derivacao, nao de texto fixo: quando a
+gordura voltar a cair, `medicoes` vira 1, o aviso some e o titulo troca sozinho.
+
+## Numeros derivados, nao digitados
+
+Cada numero visivel na pagina vem de `sessoes.js` por `derivar.js`: os tiles da
+abertura, as contagens de medicoes, a faixa da massa magra, o IMC atual, o tronco
+no mapa do corpo, a pontuacao e a idade corporal. Acrescentar uma medicao e
+editar UM arquivo (`src/data/sessoes.js`); o resto da pagina se reescreve.
 
 ## A meta de 60 kg
 

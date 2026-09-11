@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import Grafico from '../components/Grafico.jsx'
 import Secao from '../components/Secao.jsx'
 import { C, tooltipBase, eixoTexto } from '../lib/tema.js'
-import { VALIDAS, magra } from '../lib/derivar.js'
+import { VALIDAS, TODAS, magra, primeira, ultima } from '../lib/derivar.js'
 import { n1 } from '../lib/fmt.js'
 
 // Esta tela e sobre COMPOSICAO, e 31/07 não tem composição válida. Um null no meio
@@ -80,13 +80,14 @@ export default function Composicao() {
     <Secao
       olho="A composição ao longo do tempo"
       titulo="A faixa laranja encolhe. A verde não."
-      legenda={<>As duas faixas somadas dão o peso. A gordura cai de <b>31,5</b> para <b>26,3 kg</b> enquanto a massa magra fica onde estava, entre 39,5 e 40,6 kg o tempo todo.</>}
+      legenda={<>As duas faixas somadas dão o peso. A gordura cai de <b>{n1(primeira.gordura)}</b> para <b>{n1(ultima.gordura)} kg</b> enquanto a massa magra fica na mesma faixa o tempo todo, entre {n1(Math.min(...VALIDAS.map(magra)))} e {n1(Math.max(...VALIDAS.map(magra)))} kg.</>}
     >
       <div className="cartao">
         <Grafico opcao={opcao} altura={300} aria="Gordura e massa magra empilhadas ao longo do tempo, somando o peso" />
         <div className="rodape">
-          São 6 datas, não 7: a medição de 31/07 saiu daqui porque a composição
-          dela nasceu de uma altura errada. Ela aparece inteira mais abaixo.
+          São {VALIDAS.length} datas, não {TODAS.length}: a medição de 31/07 saiu daqui
+          porque a composição dela nasceu de uma altura errada. Ela aparece inteira
+          mais abaixo.
         </div>
       </div>
     </Secao>

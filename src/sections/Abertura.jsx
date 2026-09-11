@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import Grafico from '../components/Grafico.jsx'
 import Secao from '../components/Secao.jsx'
 import { C, tooltipBase, eixoTexto } from '../lib/tema.js'
-import { VALIDAS, magra, RESUMO, META_PESO } from '../lib/derivar.js'
+import { VALIDAS, magra, RESUMO, META_PESO, primeira, ultima, GORDURA_PARADA } from '../lib/derivar.js'
 import { n1, dKg, dPp } from '../lib/fmt.js'
 
 // Linha simples no tempo: a data corre da esquerda para a direita, que é como se lê.
@@ -14,7 +14,19 @@ const SERIES = [
   { nome: 'Massa magra', cor: C.musculo, traco: 'dashed', largura: 2.4, valor: s => magra(s) }
 ]
 
+const MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+  'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro']
+const porExtenso = iso => {
+  const [, m, d] = iso.split('-')
+  return `${Number(d)} de ${MESES[Number(m) - 1]}`
+}
+
 export default function Abertura() {
+  // A gordura "parou" quando duas ou mais medições seguidas repetem o mesmo valor.
+  // Quando ela voltar a cair, GORDURA_PARADA.medicoes cai para 1, o título troca
+  // sozinho e o aviso some. Nada aqui precisa ser reescrito à mão.
+  const parou = GORDURA_PARADA.medicoes >= 2
+
   const opcao = useMemo(() => ({
     animationDuration: 900,
     grid: { left: 40, right: 48, top: 28, bottom: 48 },
@@ -30,7 +42,7 @@ export default function Abertura() {
     },
     xAxis: {
       type: 'category', data: VALIDAS.map(s => s.rotulo), boundaryGap: false,
-      axisLabel: { ...eixoTexto, fontSize: 10 },
+      axisLabel: { ...eixoTexto, fontSize: 9.5 },
       axisLine: { lineStyle: { color: C.borda } }, axisTick: { show: false }
     },
     yAxis: {
@@ -72,20 +84,35 @@ export default function Abertura() {
 
   return (
     <Secao
-      olho="23 de julho a 3 de setembro de 2026 · 7 medições"
-      titulo="Cinco quilos a menos. Todos eles de gordura."
+      olho={`${porExtenso(primeira.data)} a ${porExtenso(ultima.data)} de ${ultima.data.slice(0, 4)} · ${RESUMO.medicoes} medições`}
+      titulo={parou
+        ? `${n1(Math.abs(RESUMO.dPeso))} kg a menos. Mas a gordura parou.`
+        : `${n1(Math.abs(RESUMO.dPeso))} kg a menos, e ${n1(RESUMO.fracaoGordura)}% vieram da gordura.`}
     >
       <div className="heroNum">
-        <span className="v bom">−5,0</span>
+        <span className="v bom">{dKg(RESUMO.dPeso).replace(' kg', '')}</span>
         <span className="u">kg na balança</span>
       </div>
 
-      <div className="cartao" style={{ marginTop: 12 }}>
+      {parou && (
+        <div className="aviso" style={{ background: 'rgba(251,191,36,.07)', borderColor: 'rgba(251,191,36,.32)' }}>
+          <span className="mk">⚠</span>
+          <span className="tx">
+            A gordura está em <b>{n1(GORDURA_PARADA.valor)} kg</b> há{' '}
+            <b>{GORDURA_PARADA.medicoes} medições</b>, desde {GORDURA_PARADA.de.rotulo}.
+            Nesses {GORDURA_PARADA.dias} dias a balança caiu <b>{n1(Math.abs(GORDURA_PARADA.dPeso))} kg</b>{' '}
+            e o músculo caiu <b>{n1(Math.abs(GORDURA_PARADA.dMusculo))} kg</b>: o peso que saiu era músculo.
+            Por isso o percentual de gordura <b>subiu</b> {dPp(GORDURA_PARADA.dPercGordura)} no período,
+            mesmo ela pesando menos.
+          </span>
+        </div>
+      )}
+
+      <div className="cartao" style={{ marginTop: 10 }}>
         <Grafico opcao={opcao} altura={282} aria="Peso, gordura e massa magra ao longo do período" />
         <div className="rodape">
-          A linha branca é o peso e a laranja é a gordura: as duas caem juntas. A
-          tracejada verde é a massa magra, que fica parada. A pontilhada é a meta
-          de 60 kg.
+          A linha branca é o peso e a laranja é a gordura. A tracejada verde é a massa
+          magra. A pontilhada é a meta de {META_PESO} kg.
         </div>
       </div>
 
@@ -93,21 +120,21 @@ export default function Abertura() {
         <div className="tile">
           <div className="rot">Gordura</div>
           <div className="val corGordura">{dKg(RESUMO.dGordura)}</div>
-          <div className="sub">31,5 → 26,3 kg</div>
+          <div className="sub">{n1(primeira.gordura)} → {n1(ultima.gordura)} kg</div>
         </div>
         <div className="tile">
           <div className="rot">Massa magra</div>
-          <div className="val corMusculo">{dKg(RESUMO.dMagra)}</div>
-          <div className="sub">39,5 → 39,7 kg</div>
+          <div className={`val ${RESUMO.dMagra >= 0 ? 'corMusculo' : 'alerta'}`}>{dKg(RESUMO.dMagra)}</div>
+          <div className="sub">{n1(magra(primeira))} → {n1(magra(ultima))} kg</div>
         </div>
         <div className="tile">
           <div className="rot">% de gordura</div>
           <div className="val bom">{dPp(RESUMO.dPercGordura)}</div>
-          <div className="sub">44,3 → 39,8%</div>
+          <div className="sub">{n1(primeira.percGordura)} → {n1(ultima.percGordura)}%</div>
         </div>
         <div className="tile">
           <div className="rot">Gordura visceral</div>
-          <div className="val bom">14 → 11</div>
+          <div className="val bom">{primeira.visceral} → {ultima.visceral}</div>
           <div className="sub">meta abaixo de 10</div>
         </div>
       </div>

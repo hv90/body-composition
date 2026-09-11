@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import Grafico from '../components/Grafico.jsx'
 import Secao from '../components/Secao.jsx'
 import { C, tooltipBase, eixoTexto } from '../lib/tema.js'
-import { VALIDAS, primeira, ultima, FAIXAS_IMC, META_PESO, IMC_META } from '../lib/derivar.js'
+import { VALIDAS, primeira, ultima, FAIXAS_IMC, META_PESO, IMC_META, RESUMO } from '../lib/derivar.js'
 import { n1 } from '../lib/fmt.js'
 
 export default function Rota() {
@@ -88,7 +88,7 @@ export default function Rota() {
     <Secao
       olho="A rota"
       titulo="Saiu da obesidade em duas semanas"
-      legenda={<>O IMC atravessou a linha dos 30 entre julho e agosto. A faixa saudável começa em 25, e ele está em <b>28,6</b>.</>}
+      legenda={<>O IMC atravessou a linha dos 30 entre julho e agosto. A faixa saudável começa em 25, e ele está em <b>{n1(ultima.imc)}</b>.</>}
     >
       <div className="cartao">
         <Grafico opcao={imc} altura={250} aria="IMC ao longo do período sobre as faixas de classificação" />
@@ -102,7 +102,7 @@ export default function Rota() {
         <Grafico opcao={trilha} altura={96} aria={`Já perdeu ${percorrido} kg, faltam ${restante} kg até a meta de ${meta} kg`} />
         <div className="rodape" style={{ paddingTop: 4 }}>
           <b style={{ color: 'var(--texto)' }}>
-            {Math.round((percorrido / totalCaminho) * 100)}% do caminho, em 42 dias.
+            {Math.round((percorrido / totalCaminho) * 100)}% do caminho, em {RESUMO.dias} dias.
           </b>{' '}
           Nos 60 kg o IMC fica em {n1(IMC_META)}, encostando na faixa saudável. O
           aparelho sugere 51 kg, mas essa conta é dele, feita só de altura e idade.

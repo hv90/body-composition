@@ -62,6 +62,25 @@ export const RESUMO = {
   fracaoGordura: r1((r1(ultima.gordura - primeira.gordura) / r1(ultima.peso - primeira.peso)) * 100)
 }
 
+// A GORDURA PARADA. Quantas medições válidas no fim da série repetem exatamente o
+// mesmo valor de gordura, e o que o peso e o músculo fizeram nesse intervalo. Derivado
+// e não escrito à mão: quando a gordura voltar a cair, isto se apaga sozinho.
+export const GORDURA_PARADA = (() => {
+  const valor = ultima.gordura
+  let i = VALIDAS.length - 1
+  while (i > 0 && VALIDAS[i - 1].gordura === valor) i--
+  const de = VALIDAS[i]
+  return {
+    medicoes: VALIDAS.length - i,
+    valor,
+    de,
+    dias: diasEntre(de.data, ultima.data),
+    dPeso: r1(ultima.peso - de.peso),
+    dMusculo: r1(ultima.muscular - de.muscular),
+    dPercGordura: r1(ultima.percGordura - de.percGordura)
+  }
+})()
+
 // A meta real de peso, informada fora dos laudos. O aparelho sugere 51,0 kg
 // (campo pesoAlvo, derivado de altura e idade), o que é outra coisa e fica guardado
 // separado para não se misturar com o objetivo dela.

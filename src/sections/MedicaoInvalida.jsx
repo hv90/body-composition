@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import Grafico from '../components/Grafico.jsx'
 import Secao from '../components/Secao.jsx'
 import { C, tooltipBase, eixoTexto } from '../lib/tema.js'
-import { TODAS, CORROMPIDA } from '../lib/derivar.js'
+import { TODAS, VALIDAS, CORROMPIDA } from '../lib/derivar.js'
 import { PERFIL } from '../data/sessoes.js'
 import { n1 } from '../lib/fmt.js'
 
@@ -32,7 +32,7 @@ export default function MedicaoInvalida() {
       },
       xAxis: {
         type: 'category', data: rot, boundaryGap: false,
-        axisLabel: eixoTexto, axisLine: { lineStyle: { color: C.borda } }, axisTick: { show: false }
+        axisLabel: { ...eixoTexto, fontSize: 8.5, interval: 0 }, axisLine: { lineStyle: { color: C.borda } }, axisTick: { show: false }
       },
       yAxis: {
         type: 'value', min: 26, max: 48, interval: 4,
@@ -108,9 +108,9 @@ export default function MedicaoInvalida() {
       <div className="chaveValor">
         <span className="k">Altura no cadastro</span><span className="v ruim">165 cm</span>
         <span className="k">Altura real</span><span className="v">{PERFIL.alturaCm} cm</span>
-        <span className="k">Medições no total</span><span className="v">7</span>
-        <span className="k">Com composição válida</span><span className="v">6</span>
-        <span className="k">Com peso válido</span><span className="v bom">7</span>
+        <span className="k">Medições no total</span><span className="v">{TODAS.length}</span>
+        <span className="k">Com composição válida</span><span className="v">{VALIDAS.length}</span>
+        <span className="k">Com peso válido</span><span className="v bom">{TODAS.length}</span>
       </div>
     </Secao>
   )

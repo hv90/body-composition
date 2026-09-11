@@ -120,7 +120,7 @@ export default function MapaDoCorpo() {
     <Secao
       olho="Onde no corpo"
       titulo="O tronco é quem carrega, e é ele quem mais cede"
-      legenda={<>Cada bola é um pedaço do corpo, do tamanho do que ela pesa. Arraste a data para ver o corpo mudar. Em gordura, o tronco sai de <b>16,9</b> para <b>14,2 kg</b>.</>}
+      legenda={<>Cada bola é um pedaço do corpo, do tamanho do que ela pesa. Arraste a data para ver o corpo mudar. Em gordura, o tronco sai de <b>{n1(primeira.gorduraSeg.tronco)}</b> para <b>{n1(ultima.gorduraSeg.tronco)} kg</b>.</>}
     >
       <div className="cartao">
         <div className="controles">
