@@ -143,7 +143,7 @@ a {n1(Math.abs(CONFRONTO ? CONFRONTO.maiorDifGordura : PARES[0].difGordura))} kg
               <span className="tx">
                 Quando duas balanças discordam, a saída não é escolher a mais simpática:
                 é seguir <b>cada uma na sua própria série</b>. A balança 1 tem {VALIDAS.length} medições
-                de composição e já mostra tendência. A balança 2 tem {PARES.length}, e {PARES.length}
+                de composição e já mostra tendência. A balança 2 tem {PARES.length}, e {PARES.length}{' '}
                 pontos não formam tendência nenhuma.
               </span>
             </div>
