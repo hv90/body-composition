@@ -5,9 +5,10 @@ import DoisMomentos from './sections/DoisMomentos.jsx'
 import MapaDoCorpo from './sections/MapaDoCorpo.jsx'
 import SinaisInternos from './sections/SinaisInternos.jsx'
 import Rota from './sections/Rota.jsx'
+import SegundaBalanca from './sections/SegundaBalanca.jsx'
 import MedicaoInvalida from './sections/MedicaoInvalida.jsx'
 import Sinais from './sections/Sinais.jsx'
-import { RESUMO, primeira, ultima } from './lib/derivar.js'
+import { RESUMO, primeira, ultima, LUMI } from './lib/derivar.js'
 import { dataBR } from './lib/fmt.js'
 
 export default function App() {
@@ -26,14 +27,16 @@ export default function App() {
         <MapaDoCorpo />
         <SinaisInternos />
         <Rota />
+        <SegundaBalanca />
         <MedicaoInvalida />
         <Sinais />
       </main>
 
       <footer className="rodapePagina">
-        Dados transcritos de {RESUMO.medicoes} laudos Fitdays de análise de composição
-        corporal, de {dataBR(primeira.data)} a {dataBR(ultima.data)}. Bioimpedância
-        estima a composição do corpo,
+        Dados transcritos de {RESUMO.medicoes} laudos de análise de composição corporal,
+        de {dataBR(primeira.data)} a {dataBR(ultima.data)}, mais {LUMI.length} laudos de uma
+        segunda balança a partir de {dataBR(LUMI[0].data)}. As duas nunca são somadas na mesma
+        série. Bioimpedância estima a composição do corpo,
         ela não mede diretamente. Hidratação, horário e alimentação mexem no
         resultado, então o que vale é a tendência, não a casa decimal de um dia.
       </footer>

@@ -1,11 +1,21 @@
 // ---------------------------------------------------------------------------
-// Fonte: 7 relatorios Fitdays "Relatorio de análise de composição corporal".
-// Transcricao literal dos PDFs. Nenhum valor foi calculado aqui.
+// Fonte: 10 laudos Fitdays "Relatório de análise de composição corporal",
+// a balança que acompanha a série desde julho. Transcrição literal dos PDFs.
+// Nenhum valor foi calculado aqui.
 //
-// A sessao de 31/07 foi medida com ALTURA 165 cm. A altura real e 152 cm.
-// Toda a composição daquele laudo e derivada da altura, então ela nasce errada.
-// O que NAO depende da altura continua válido e e usado normalmente:
+// A sessão de 31/07 foi medida com ALTURA 165 cm. A altura real é 152 cm.
+// Toda a composição daquele laudo é derivada da altura, então ela nasce errada.
+// O que NÃO depende da altura continua válido e é usado normalmente:
 // o peso (medido pela balança) e as impedâncias (medidas pelos eletrodos).
+//
+// A partir de 25/09 a balança recebeu uma atualização de software e o laudo
+// deixou de trazer a relação cintura/quadril: por isso 'whr' some dessas duas
+// sessões, em vez de ser preenchido com um valor que o aparelho não imprimiu.
+//
+// Em 25/09 entrou uma SEGUNDA balança (Lumi One), que mede a mesma pessoa no
+// mesmo dia e chega a outros números. Ela vive em SESSOES_LUMI, separada, e
+// nunca entra nas séries da primeira: misturar as duas inventaria variação
+// que é só diferença de aparelho.
 // ---------------------------------------------------------------------------
 
 export const PERFIL = {
@@ -139,6 +149,63 @@ export const SESSOES = [
     musculoSegPerc: { bracoE: 94.7,  bracoD: 92.5,  tronco: 92.5,  pernaE: 96.9,  pernaD: 96.7 },
     z20:  { bracoD: 397.2, bracoE: 384.2, tronco: 22.1, pernaD: 281.0, pernaE: 281.8 },
     z100: { bracoD: 359.4, bracoE: 345.7, tronco: 17.1, pernaD: 251.7, pernaE: 253.7 }
+  },
+  {
+    data: '2026-09-25', rotulo: '25/set', hora: '14:54', idLaudo: 'perfil pós-atualização',
+    alturaRelatada: 152, composicaoValida: true,
+    peso: 63.3, gordura: 25.3, ossea: 2.5, proteica: 7.6, agua: 27.9,
+    muscular: 35.4, esqueletico: 20.6,
+    pontuacao: 67, imc: 27.4, percGordura: 40.0, obesidadePerc: 130,
+    pesoAlvo: 49.2, visceral: 11, tmb: 1190, livreGordura: 38.0,
+    subcutanea: 28.5, smi: 6.8, idadeCorporal: 67,
+    gorduraSeg:     { bracoE: 1.8,   bracoD: 1.8,   tronco: 13.6,  pernaE: 3.8,   pernaD: 3.8 },
+    gorduraSegPerc: { bracoE: 207.8, bracoD: 210.6, tronco: 295.5, pernaE: 188.7, pernaD: 188.4 },
+    musculoSeg:     { bracoE: 1.8,   bracoD: 1.8,   tronco: 16.4,  pernaE: 6.0,   pernaD: 6.0 },
+    musculoSegPerc: { bracoE: 91.8,  bracoD: 91.0,  tronco: 91.6,  pernaE: 95.6,  pernaD: 95.5 },
+    z20:  { bracoD: 398.3, bracoE: 399.6, tronco: 21.2, pernaD: 283.8, pernaE: 285.3 },
+    z100: { bracoD: 360.9, bracoE: 358.7, tronco: 16.8, pernaD: 253.9, pernaE: 256.1 }
+  },
+  {
+    data: '2026-10-01', rotulo: '01/out', hora: '15:07', idLaudo: 'perfil pós-atualização',
+    alturaRelatada: 152, composicaoValida: true,
+    peso: 64.0, gordura: 25.6, ossea: 2.6, proteica: 7.7, agua: 28.2,
+    muscular: 35.8, esqueletico: 20.9,
+    pontuacao: 67, imc: 27.7, percGordura: 40.0, obesidadePerc: 132,
+    pesoAlvo: 49.6, visceral: 11, tmb: 1199, livreGordura: 38.4,
+    subcutanea: 28.5, smi: 6.9, idadeCorporal: 67,
+    gorduraSeg:     { bracoE: 1.8,   bracoD: 1.8,   tronco: 13.7,  pernaE: 3.9,   pernaD: 3.9 },
+    gorduraSegPerc: { bracoE: 209.3, bracoD: 212.9, tronco: 299.8, pernaE: 190.4, pernaD: 190.0 },
+    musculoSeg:     { bracoE: 1.9,   bracoD: 1.8,   tronco: 16.6,  pernaE: 6.1,   pernaD: 6.1 },
+    musculoSegPerc: { bracoE: 93.4,  bracoD: 92.0,  tronco: 92.0,  pernaE: 96.0,  pernaD: 95.9 },
+    z20:  { bracoD: 395.1, bracoE: 392.6, tronco: 20.2, pernaD: 286.7, pernaE: 287.1 },
+    z100: { bracoD: 357.8, bracoE: 351.7, tronco: 16.0, pernaD: 255.7, pernaE: 257.0 }
+  }
+]
+
+// ---------------------------------------------------------------------------
+// SEGUNDA BALANÇA (Lumi One), desde 25/09. Mede a mesma pessoa no mesmo dia,
+// com poucos minutos de diferença da outra. Traz dois dados que a primeira não
+// dá: o ângulo de fase e a divisão da água entre dentro e fora das células.
+// Transcrição literal. Duas medições só: ainda não é uma série.
+// ---------------------------------------------------------------------------
+export const SESSOES_LUMI = [
+  {
+    data: '2026-09-25', rotulo: '25/set', hora: '14:33',
+    peso: 63.5, gorda: 23.4, percGordura: 36.8, magra: 40.1, percMagra: 63.2,
+    muscular: 16.3, percMuscular: 25.7, razaoMusculoGordura: 0.7,
+    aguaTotal: 28.6, percAguaTotal: 45.1, hidratacao: 2.6, aguaNaMassaMagra: 71.3,
+    intracelular: 15.5, percIntracelular: 54.3,
+    extracelular: 13.1, percExtracelular: 45.7,
+    imc: 27.5, tmb: 1130, anguloFase: 7.0, idadeCelular: 58
+  },
+  {
+    data: '2026-10-01', rotulo: '01/out', hora: '15:03',
+    peso: 63.8, gorda: 23.1, percGordura: 36.3, magra: 40.7, percMagra: 63.7,
+    muscular: 16.8, percMuscular: 26.3, razaoMusculoGordura: 0.7,
+    aguaTotal: 29.2, percAguaTotal: 45.7, hidratacao: 2.7, aguaNaMassaMagra: 71.7,
+    intracelular: 15.8, percIntracelular: 54.0,
+    extracelular: 13.4, percExtracelular: 46.0,
+    imc: 27.6, tmb: 1143, anguloFase: 6.9, idadeCelular: 59
   }
 ]
 

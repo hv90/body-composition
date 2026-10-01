@@ -2,13 +2,17 @@ import { useMemo } from 'react'
 import Grafico from '../components/Grafico.jsx'
 import Secao from '../components/Secao.jsx'
 import { C, tooltipBase, eixoTexto } from '../lib/tema.js'
-import { VALIDAS, primeira, ultima } from '../lib/derivar.js'
+import { VALIDAS, primeira, ultima, ultimoCom } from '../lib/derivar.js'
 import { PERFIL } from '../data/sessoes.js'
 
 // WHR vem com duas casas nos laudos (0,89), e n1 arredondaria para uma.
 const n1x2 = v => v.toFixed(2).replace('.', ',')
 
 export default function SinaisInternos() {
+  // A atualização de software de 25/09 parou de imprimir cintura/quadril, então
+  // o último valor disponível pode não ser o da última medição. A tela diz de quando é.
+  const whr = ultimoCom('whr')
+
   const gauge = useMemo(() => ({
     animationDuration: 900,
     series: [
@@ -90,7 +94,7 @@ export default function SinaisInternos() {
       legenda={<>O ponteiro fino marca onde estava em julho. A gordura visceral é a que fica em volta dos órgãos, e é a que mais pesa na saúde. Saiu da faixa vermelha e entrou na amarela.</>}
     >
       <div className="cartao">
-        <Grafico opcao={gauge} altura={230} aria="Medidor de gordura visceral, hoje em 11, antes em 14" />
+        <Grafico opcao={gauge} altura={230} aria={`Medidor de gordura visceral, hoje em ${ultima.visceral}, antes em ${primeira.visceral}`} />
       </div>
 
       <div className="grade tres" style={{ marginTop: 10, marginBottom: 10 }}>
@@ -106,8 +110,11 @@ export default function SinaisInternos() {
         </div>
         <div className="tile">
           <div className="rot">Cint./quadril</div>
-          <div className="val bom">{n1x2(ultima.whr)}</div>
-          <div className="sub">era {n1x2(primeira.whr)}</div>
+          <div className="val bom">{n1x2(whr.whr)}</div>
+          <div className="sub">
+            era {n1x2(primeira.whr)}
+            {whr !== ultima && <> · últ. {whr.rotulo}</>}
+          </div>
         </div>
       </div>
 

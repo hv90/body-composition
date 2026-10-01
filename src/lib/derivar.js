@@ -1,4 +1,4 @@
-import { SESSOES } from '../data/sessoes.js'
+import { SESSOES, SESSOES_LUMI } from '../data/sessoes.js'
 
 const r1 = v => Math.round(v * 10) / 10
 
@@ -21,6 +21,11 @@ export const primeira = VALIDAS[0]
 export const ultima = VALIDAS[VALIDAS.length - 1]
 
 export const diasEntre = (a, b) => Math.round((ts(b) - ts(a)) / 86400000)
+
+// Nem todo laudo traz todo campo: a atualização de software de 25/09 parou de
+// imprimir a relação cintura/quadril. Isto devolve a medição mais recente que
+// ainda tem o campo, para a tela poder dizer de quando é o número que mostra.
+export const ultimoCom = campo => [...VALIDAS].reverse().find(s => s[campo] != null)
 
 // Um intervalo por par de medições válidas consecutivas.
 export const INTERVALOS = VALIDAS.slice(1).map((s, i) => {
@@ -78,6 +83,60 @@ export const GORDURA_PARADA = (() => {
     dPeso: r1(ultima.peso - de.peso),
     dMusculo: r1(ultima.muscular - de.muscular),
     dPercGordura: r1(ultima.percGordura - de.percGordura)
+  }
+})()
+
+// ---------------------------------------------------------------------------
+// A SEGUNDA BALANÇA. Entrou em 25/09 e mede nos mesmos dias da primeira, com
+// minutos de diferença. As duas nunca se misturam numa série: o que elas
+// permitem é comparar leitura com leitura, no mesmo dia e no mesmo corpo.
+// ---------------------------------------------------------------------------
+export const LUMI = SESSOES_LUMI
+export const lumiPrimeira = LUMI[0]
+export const lumiUltima = LUMI[LUMI.length - 1]
+
+// Um par por dia em que as duas mediram.
+export const PARES = LUMI
+  .map(l => ({ lumi: l, base: VALIDAS.find(v => v.data === l.data) }))
+  .filter(p => p.base)
+  .map(p => ({
+    data: p.base.data,
+    rotulo: p.base.rotulo,
+    base: p.base,
+    lumi: p.lumi,
+    difPeso: r1(p.lumi.peso - p.base.peso),
+    difGordura: r1(p.lumi.gorda - p.base.gordura),
+    difMagra: r1(p.lumi.magra - magra(p.base)),
+    difPercGordura: r1(p.lumi.percGordura - p.base.percGordura),
+    difImc: r1(p.lumi.imc - p.base.imc)
+  }))
+
+// O que cada balança diz que aconteceu entre o primeiro e o último dia em que
+// as duas mediram. Quando os sinais divergem, as duas contam histórias opostas
+// sobre o mesmo intervalo.
+export const CONFRONTO = (() => {
+  if (PARES.length < 2) return null
+  const a = PARES[0]
+  const b = PARES[PARES.length - 1]
+  const dGorduraBase = r1(b.base.gordura - a.base.gordura)
+  const dGorduraLumi = r1(b.lumi.gorda - a.lumi.gorda)
+  return {
+    de: a, para: b,
+    dias: diasEntre(a.data, b.data),
+    dPesoBase: r1(b.base.peso - a.base.peso),
+    dPesoLumi: r1(b.lumi.peso - a.lumi.peso),
+    dGorduraBase,
+    dGorduraLumi,
+    dMagraBase: r1(magra(b.base) - magra(a.base)),
+    dMagraLumi: r1(b.lumi.magra - a.lumi.magra),
+    // Discordam na direção quando uma vê gordura subindo e a outra vê caindo.
+    direcaoOposta: dGorduraBase !== 0 && dGorduraLumi !== 0 &&
+      Math.sign(dGorduraBase) !== Math.sign(dGorduraLumi),
+    dAnguloFase: r1(b.lumi.anguloFase - a.lumi.anguloFase),
+    dIdadeCelular: b.lumi.idadeCelular - a.lumi.idadeCelular,
+    // Maior distância entre as duas leituras de gordura, em kg, nos dias pareados.
+    maiorDifGordura: PARES.reduce((m, p) => Math.abs(p.difGordura) > Math.abs(m) ? p.difGordura : m, 0),
+    maiorDifPeso: PARES.reduce((m, p) => Math.abs(p.difPeso) > Math.abs(m) ? p.difPeso : m, 0)
   }
 })()
 

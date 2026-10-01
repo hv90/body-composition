@@ -104,8 +104,8 @@ export default function Rota() {
           <b style={{ color: 'var(--texto)' }}>
             {Math.round((percorrido / totalCaminho) * 100)}% do caminho, em {RESUMO.dias} dias.
           </b>{' '}
-          Nos 60 kg o IMC fica em {n1(IMC_META)}, encostando na faixa saudável. O
-          aparelho sugere 51 kg, mas essa conta é dele, feita só de altura e idade.
+          Nos {n1(meta)} kg o IMC fica em {n1(IMC_META)}, encostando na faixa saudável. O
+          aparelho sugere {n1(ultima.pesoAlvo)} kg, mas essa conta é dele, feita só de altura e idade.
         </div>
       </div>
     </Secao>
