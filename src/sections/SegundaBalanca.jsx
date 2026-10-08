@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import Grafico from '../components/Grafico.jsx'
 import Secao from '../components/Secao.jsx'
 import { C, tooltipBase, eixoTexto } from '../lib/tema.js'
-import { PARES, CONFRONTO, VALIDAS, magra, lumiUltima, lumiPrimeira } from '../lib/derivar.js'
+import { PARES, CONFRONTO, VALIDAS, SO_BALANCA_1, magra, lumiUltima, lumiPrimeira } from '../lib/derivar.js'
 import { n1, dKg, dPp } from '../lib/fmt.js'
 
 // A segunda balança ganha uma cor própria. Mesmo tipo de gráfico da abertura,
@@ -110,7 +110,10 @@ export default function SegundaBalanca() {
         minutos de diferença. Elas quase não discutem o <b>peso</b>: a maior
         distância entre as duas foi de {n1(Math.abs(CONFRONTO ? CONFRONTO.maiorDifPeso : PARES[0].difPeso))} kg.
         Sobre <b>gordura</b> a distância chega
-a {n1(Math.abs(CONFRONTO ? CONFRONTO.maiorDifGordura : PARES[0].difGordura))} kg.
+        a {n1(Math.abs(CONFRONTO ? CONFRONTO.maiorDifGordura : PARES[0].difGordura))} kg.
+        {SO_BALANCA_1.length > 0 && <> A segunda não mediu em{' '}
+          {SO_BALANCA_1.map(s => s.rotulo).join(', ')}, então esta comparação para
+          em {PARES[PARES.length - 1].rotulo} enquanto a série principal segue.</>}
       </>}
     >
       <div className="cartao">

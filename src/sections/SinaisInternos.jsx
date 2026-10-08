@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import Grafico from '../components/Grafico.jsx'
 import Secao from '../components/Secao.jsx'
 import { C, tooltipBase, eixoTexto } from '../lib/tema.js'
-import { VALIDAS, primeira, ultima, ultimoCom } from '../lib/derivar.js'
+import { VALIDAS, primeira, ultima, ultimoCom, faixaVisceral } from '../lib/derivar.js'
 import { PERFIL } from '../data/sessoes.js'
 
 // WHR vem com duas casas nos laudos (0,89), e n1 arredondaria para uma.
@@ -91,7 +91,10 @@ export default function SinaisInternos() {
     <Secao
       olho="Por dentro"
       titulo="A gordura que ninguém vê também cedeu"
-      legenda={<>O ponteiro fino marca onde estava em julho. A gordura visceral é a que fica em volta dos órgãos, e é a que mais pesa na saúde. Saiu da faixa vermelha e entrou na amarela.</>}
+      legenda={<>O ponteiro fino marca onde estava em julho. A gordura visceral é a que fica em volta dos órgãos, e é a que mais pesa na saúde. Caiu de <b>{primeira.visceral}</b> para <b>{ultima.visceral}</b>{faixaVisceral(primeira.visceral) === faixaVisceral(ultima.visceral)
+        ? <>, sem sair da faixa {faixaVisceral(ultima.visceral)}</>
+        : <>, da faixa {faixaVisceral(primeira.visceral)} para a {faixaVisceral(ultima.visceral)}</>}
+        {ultima.visceral > 9 && <>. Abaixo de 10 começa o verde.</>}</>}
     >
       <div className="cartao">
         <Grafico opcao={gauge} altura={230} aria={`Medidor de gordura visceral, hoje em ${ultima.visceral}, antes em ${primeira.visceral}`} />

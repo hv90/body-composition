@@ -35,7 +35,7 @@ export default function Sinais() {
 
     return {
       animationDuration: 500,
-      grid: { left: 58, right: 14, top: 14, bottom: 66 },
+      grid: { left: 58, right: 14, top: 14, bottom: 78 },
       tooltip: {
         ...tooltipBase,
         formatter: p => {
@@ -47,7 +47,7 @@ export default function Sinais() {
       },
       xAxis: {
         type: 'category', data: TODAS.map(s => s.rotulo),
-        axisLabel: { ...eixoTexto, fontSize: 8.5, interval: 0 },
+        axisLabel: { ...eixoTexto, fontSize: 9, interval: 0, rotate: 45, align: 'right' },
         axisLine: { show: false }, axisTick: { show: false },
         splitArea: { show: true, areaStyle: { color: ['transparent'] } }
       },

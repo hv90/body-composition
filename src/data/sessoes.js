@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Fonte: 10 laudos Fitdays "Relatório de análise de composição corporal",
+// Fonte: 11 laudos Fitdays "Relatório de análise de composição corporal",
 // a balança que acompanha a série desde julho. Transcrição literal dos PDFs.
 // Nenhum valor foi calculado aqui.
 //
@@ -11,6 +11,12 @@
 // A partir de 25/09 a balança recebeu uma atualização de software e o laudo
 // deixou de trazer a relação cintura/quadril: por isso 'whr' some dessas duas
 // sessões, em vez de ser preenchido com um valor que o aparelho não imprimiu.
+// Em 08/10 o campo voltou, junto com outra mudança de layout do aplicativo.
+//
+// O laudo de 08/10 saiu num perfil de visitante do aparelho, não no perfil dela.
+// Isso só importaria se o perfil carregasse altura ou idade erradas, como em
+// 31/07: o cabeçalho traz 152 cm e 64 anos, que são os corretos, então a
+// composição vale.
 //
 // Em 25/09 entrou uma SEGUNDA balança (Lumi One), que mede a mesma pessoa no
 // mesmo dia e chega a outros números. Ela vive em SESSOES_LUMI, separada, e
@@ -179,6 +185,21 @@ export const SESSOES = [
     musculoSegPerc: { bracoE: 93.4,  bracoD: 92.0,  tronco: 92.0,  pernaE: 96.0,  pernaD: 95.9 },
     z20:  { bracoD: 395.1, bracoE: 392.6, tronco: 20.2, pernaD: 286.7, pernaE: 287.1 },
     z100: { bracoD: 357.8, bracoE: 351.7, tronco: 16.0, pernaD: 255.7, pernaE: 257.0 }
+  },
+  {
+    data: '2026-10-08', rotulo: '08/out', hora: '13:58', idLaudo: 'perfil visitante',
+    alturaRelatada: 152, composicaoValida: true,
+    peso: 62.6, gordura: 24.0, ossea: 2.6, proteica: 7.8, agua: 28.4,
+    muscular: 36.2, esqueletico: 21.0,
+    pontuacao: 68, imc: 27.1, percGordura: 38.3, obesidadePerc: 129,
+    pesoAlvo: 49.9, visceral: 10, tmb: 1205, livreGordura: 38.8,
+    subcutanea: 27.3, smi: 6.9, idadeCorporal: 67, whr: 0.86,
+    gorduraSeg:     { bracoE: 1.6,   bracoD: 1.7,   tronco: 12.8,  pernaE: 3.7,   pernaD: 3.7 },
+    gorduraSegPerc: { bracoE: 191.2, bracoD: 195.9, tronco: 280.0, pernaE: 179.4, pernaD: 179.1 },
+    musculoSeg:     { bracoE: 1.9,   bracoD: 1.9,   tronco: 16.7,  pernaE: 6.1,   pernaD: 6.1 },
+    musculoSegPerc: { bracoE: 97.1,  bracoD: 95.1,  tronco: 94.0,  pernaE: 98.2,  pernaD: 98.1 },
+    z20:  { bracoD: 387.5, bracoE: 382.5, tronco: 20.7, pernaD: 282.0, pernaE: 283.5 },
+    z100: { bracoD: 350.9, bracoE: 341.7, tronco: 16.0, pernaD: 252.4, pernaE: 254.3 }
   }
 ]
 

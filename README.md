@@ -1,7 +1,7 @@
 # Composicao corporal em graficos
 
-Dez laudos de bioimpedancia da balanca que acompanha a serie desde julho, de
-23/07/2026 a 01/10/2026, mais dois de uma segunda balanca que entrou em 25/09,
+Onze laudos de bioimpedancia da balanca que acompanha a serie desde julho, de
+23/07/2026 a 08/10/2026, mais dois de uma segunda balanca que entrou em 25/09,
 virados em uma pagina de graficos ECharts. Mobile-first: tudo foi desenhado para 375 px de largura
 primeiro, e o desktop apenas se acomoda.
 
@@ -55,11 +55,11 @@ editar UM arquivo (`src/data/sessoes.js`); o resto da pagina se reescreve.
 `META_PESO` em `src/lib/derivar.js`. Veio de fora dos laudos, e por isso esta
 declarada la em cima como constante e nao inferida de campo nenhum.
 
-Os laudos trazem um `pesoAlvo` proprio (49,6 kg no laudo mais recente), que e a
+Os laudos trazem um `pesoAlvo` proprio (49,9 kg no laudo mais recente), que e a
 sugestao do aparelho a partir de altura e idade. Esse campo continua nos dados, mas
 nao manda em nada: a barra de progresso e a linha pontilhada dos graficos usam os
 60 kg. Nessa meta o IMC fica em 26,0, logo acima da faixa saudavel, e o caminho de
-71,0 kg ate la esta 64% andado.
+71,0 kg ate la esta 76% andado.
 
 ## A segunda balanca
 
@@ -74,13 +74,22 @@ sobre quanto daquele peso e gordura, e nos primeiros seis dias apontaram direcoe
 opostas: a primeira viu a gordura subir 0,3 kg, a segunda viu cair 0,3 kg. Com dois
 pontos nenhuma provou nada, e a secao diz isso.
 
+A segunda nao mediu em 08/10. `SO_BALANCA_1` em `derivar.js` lista os dias em que
+so a primeira mediu depois que a segunda ja existia, e a legenda da secao diz onde
+a comparacao para enquanto a serie principal segue.
+
 A segunda balanca traz tres medidas que a primeira nao da: angulo de fase, idade
 celular e a divisao da agua entre dentro e fora das celulas.
 
 Na mesma data a primeira balanca recebeu uma atualizacao de software e parou de
-imprimir a relacao cintura/quadril. O campo `whr` simplesmente some dessas sessoes
-em vez de ser preenchido com um numero que o aparelho nao deu; `ultimoCom('whr')`
-devolve a medicao mais recente que ainda tem o campo, e a tela diz de quando ela e.
+imprimir a relacao cintura/quadril, que voltou em 08/10. O campo `whr` simplesmente
+some das sessoes em que o aparelho nao o imprimiu, em vez de ser preenchido com um
+numero inventado; `ultimoCom('whr')` devolve a medicao mais recente que ainda tem o
+campo, e a tela diz de quando ela e quando nao e a ultima.
+
+O laudo de 08/10 saiu num perfil de visitante do aparelho. Isso so importaria se o
+perfil carregasse altura ou idade erradas, como em 31/07: o cabecalho traz 152 cm e
+64 anos, entao a composicao vale.
 
 ## A medicao de 31/07
 

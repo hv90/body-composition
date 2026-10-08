@@ -50,6 +50,15 @@ export const INTERVALOS = VALIDAS.slice(1).map((s, i) => {
 
 export const QUASE_PARADAS = INTERVALOS.filter(i => i.quaseParada)
 
+// O intervalo em que o músculo mais subiu. Derivado para que o superlativo da
+// seção dos dois momentos não vire mentira quando chegar uma semana melhor.
+export const MAIOR_GANHO_MUSCULO = INTERVALOS.reduce((a, b) => b.dMusculo > a.dMusculo ? b : a)
+
+// As faixas do medidor de gordura visceral, nos mesmos cortes que o gauge desenha
+// (0,45 e 0,7 de 20). Ter isto aqui impede a legenda de afirmar uma faixa que o
+// próprio medidor não mostra.
+export const faixaVisceral = v => (v <= 9 ? 'verde' : v <= 14 ? 'amarela' : 'vermelha')
+
 export const RESUMO = {
   dias: diasEntre(primeira.data, ultima.data),
   medicoes: TODAS.length,
@@ -139,6 +148,13 @@ export const CONFRONTO = (() => {
     maiorDifPeso: PARES.reduce((m, p) => Math.abs(p.difPeso) > Math.abs(m) ? p.difPeso : m, 0)
   }
 })()
+
+// Dias em que a primeira balança mediu sozinha, depois que a segunda já existia.
+// A segunda não acompanha todas as medições, e a tela precisa dizer isso em vez
+// de prometer que as duas andam sempre juntas.
+export const SO_BALANCA_1 = LUMI.length
+  ? VALIDAS.filter(v => v.data >= LUMI[0].data && !LUMI.some(l => l.data === v.data))
+  : []
 
 // A meta real de peso, informada fora dos laudos. O aparelho sugere 51,0 kg
 // (campo pesoAlvo, derivado de altura e idade), o que é outra coisa e fica guardado

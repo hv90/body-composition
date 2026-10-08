@@ -2,14 +2,14 @@ import { useMemo } from 'react'
 import Grafico from '../components/Grafico.jsx'
 import Secao from '../components/Secao.jsx'
 import { C, tooltipBase, eixoTexto } from '../lib/tema.js'
-import { QUASE_PARADAS } from '../lib/derivar.js'
+import { QUASE_PARADAS, MAIOR_GANHO_MUSCULO } from '../lib/derivar.js'
 import { dKg, n1 } from '../lib/fmt.js'
 
 const NARRATIVA = {
   '13/ago': {
     quando: '6 a 13 de agosto · 7 dias',
     titulo: 'Trocou gordura por músculo',
-    texto: 'Perdeu 1,3 kg de gordura e ganhou 0,9 kg de músculo. Como um quase compensou o outro, a balança mal se mexeu. Foi a melhor semana do período.',
+    texto: 'Perdeu 1,3 kg de gordura e ganhou 0,9 kg de músculo. Como um quase compensou o outro, a balança mal se mexeu.',
     tom: 'bom'
   },
   '03/set': {
@@ -99,6 +99,7 @@ export default function DoisMomentos() {
             <div className="rodape">
               <b className={n.tom}>{n.titulo}</b>
               {n.texto}
+              {ev === MAIOR_GANHO_MUSCULO && ' É o maior ganho de músculo de toda a série.'}
             </div>
           </div>
         ))}
