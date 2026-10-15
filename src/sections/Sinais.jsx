@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import Grafico from '../components/Grafico.jsx'
 import Secao from '../components/Secao.jsx'
 import { C, tooltipBase, eixoTexto } from '../lib/tema.js'
-import { TODAS } from '../lib/derivar.js'
+import { TODAS, TRONCO_FORA_DO_PADRAO } from '../lib/derivar.js'
 import { SEGMENTOS } from '../data/sessoes.js'
 import { n1 } from '../lib/fmt.js'
 
@@ -87,9 +87,11 @@ export default function Sinais() {
         <Grafico opcao={opcao} altura={300} aria="Mapa de calor das impedâncias por segmento e por data" />
       </div>
       <p className="legenda" style={{ marginTop: 10 }}>
-        O quadrado verde-água do tronco em 13/ago é uma leitura fora do padrão:
-        12,2 Ω contra os 16 a 17 dos outros dias. Nada mais naquele laudo destoa,
-        então provavelmente foi contato de pele, e não o corpo.
+        O quadrado verde-água do tronco em {TRONCO_FORA_DO_PADRAO.sessao.rotulo} é uma
+        leitura fora do padrão: {n1(TRONCO_FORA_DO_PADRAO.valor)} Ω contra
+        os {n1(TRONCO_FORA_DO_PADRAO.min)} a {n1(TRONCO_FORA_DO_PADRAO.max)} dos
+        outros dias. Nada mais naquele laudo destoa, então provavelmente foi contato
+        de pele, e não o corpo.
       </p>
     </Secao>
   )

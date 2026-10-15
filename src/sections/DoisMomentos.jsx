@@ -5,6 +5,14 @@ import { C, tooltipBase, eixoTexto } from '../lib/tema.js'
 import { QUASE_PARADAS, MAIOR_GANHO_MUSCULO } from '../lib/derivar.js'
 import { dKg, n1 } from '../lib/fmt.js'
 
+// Quantos intervalos quase-parados existem hoje. A seção já nasceu com dois e
+// chegou a três; o número vem da derivação para o título não envelhecer.
+const VEZES = { 1: 'Uma vez', 2: 'Duas vezes', 3: 'Três vezes', 4: 'Quatro vezes',
+  5: 'Cinco vezes', 6: 'Seis vezes' }
+
+// Texto escrito à mão para os intervalos que já aconteceram. Um intervalo novo cai
+// na derivação abaixo em vez de derrubar a página: antes desta função, um terceiro
+// quase-parado deixava a tela inteira em branco, porque NARRATIVA não o conhecia.
 const NARRATIVA = {
   '13/ago': {
     quando: '6 a 13 de agosto · 7 dias',
@@ -17,6 +25,28 @@ const NARRATIVA = {
     titulo: 'O peso saiu do músculo',
     texto: 'A gordura não mudou nada: 26,3 kg antes e depois. Os 300 gramas que a balança marcou vieram inteiros do músculo. Mesmo número, sinal trocado.',
     tom: 'ruim'
+  },
+  '15/out': {
+    quando: '8 a 15 de outubro · 7 dias',
+    titulo: 'A balança subiu, e subiu de músculo',
+    texto: 'A gordura ficou nos mesmos 24,0 kg e o músculo subiu 0,2 kg. A balança marcou 300 gramas a mais sem que nada disso fosse gordura, e o percentual de gordura caiu mesmo com ela subindo.',
+    tom: 'bom'
+  }
+}
+
+// O caso que NARRATIVA não cobre. Sai dos números do próprio intervalo, então
+// nunca fica sem resposta nem afirma mais do que mediu.
+function narrativaDerivada(ev) {
+  const subiuMusculo = ev.dMusculo > 0
+  const gorduraParada = ev.dGordura === 0
+  return {
+    quando: `${ev.de.rotulo} a ${ev.para.rotulo} · ${ev.dias} dias`,
+    titulo: subiuMusculo
+      ? (gorduraParada ? 'A gordura parou, o músculo subiu' : 'Trocou gordura por músculo')
+      : (gorduraParada ? 'O peso saiu do músculo' : 'A balança quase não se mexeu'),
+    texto: `A balança marcou ${dKg(ev.dPeso)}. Por dentro: gordura ${dKg(ev.dGordura)}` +
+      ` e músculo ${dKg(ev.dMusculo)}.`,
+    tom: ev.dMusculo >= 0 ? 'bom' : 'ruim'
   }
 }
 
@@ -76,15 +106,17 @@ function painelOpcao(ev) {
 
 export default function DoisMomentos() {
   const paineis = useMemo(
-    () => QUASE_PARADAS.map(ev => ({ ev, opcao: painelOpcao(ev), n: NARRATIVA[ev.rotulo] })),
+    () => QUASE_PARADAS.map(ev => ({
+      ev, opcao: painelOpcao(ev), n: NARRATIVA[ev.rotulo] || narrativaDerivada(ev)
+    })),
     []
   )
 
   return (
     <Secao
-      olho="Os dois momentos"
-      titulo="Duas vezes a balança quase parou. Por motivos opostos."
-      legenda={<>Menos de meio quilo nas duas. Se só o peso fosse olhado, as duas semanas seriam iguais. Elas são o contrário uma da outra.</>}
+      olho="Quando a balança quase não se mexe"
+      titulo={`${VEZES[QUASE_PARADAS.length] || `${QUASE_PARADAS.length} vezes`} a balança quase parou. Nem sempre pelo mesmo motivo.`}
+      legenda={<>Menos de meio quilo em cada uma. Se só o peso fosse olhado, essas semanas seriam a mesma coisa. Por dentro elas não são.</>}
     >
       <div className="duo">
         {paineis.map(({ ev, opcao, n }) => (

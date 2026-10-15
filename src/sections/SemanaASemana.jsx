@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import Grafico from '../components/Grafico.jsx'
 import Secao from '../components/Secao.jsx'
 import { C, tooltipBase, eixoTexto } from '../lib/tema.js'
-import { INTERVALOS } from '../lib/derivar.js'
+import { INTERVALOS, QUASE_PARADAS } from '../lib/derivar.js'
 import { n1, dKg } from '../lib/fmt.js'
 
 export default function SemanaASemana() {
@@ -79,7 +79,7 @@ export default function SemanaASemana() {
     <Secao
       olho="O que a balança esconde"
       titulo="Cada intervalo, aberto por dentro"
-      legenda={<>O losango branco é o que a balança mostrou. As barras são de onde o peso saiu de verdade. Nos dois intervalos marcados a balança mal se mexeu, e é ali que a história muda.</>}
+      legenda={<>O losango branco é o que a balança mostrou. As barras são de onde o peso saiu de verdade. Nos {QUASE_PARADAS.length} intervalos marcados a balança mal se mexeu, e é ali que a história muda.</>}
     >
       <div className="cartao">
         <Grafico opcao={opcao} altura={330} aria="Variação de gordura, massa magra e peso em cada intervalo entre medições" />

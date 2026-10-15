@@ -1,7 +1,7 @@
 # Composicao corporal em graficos
 
-Onze laudos de bioimpedancia da balanca que acompanha a serie desde julho, de
-23/07/2026 a 08/10/2026, mais dois de uma segunda balanca que entrou em 25/09,
+Doze laudos de bioimpedancia da balanca que acompanha a serie desde julho, de
+23/07/2026 a 15/10/2026, mais tres de uma segunda balanca que entrou em 25/09,
 virados em uma pagina de graficos ECharts. Mobile-first: tudo foi desenhado para 375 px de largura
 primeiro, e o desktop apenas se acomoda.
 
@@ -12,7 +12,7 @@ primeiro, e o desktop apenas se acomoda.
 | 1 | Abertura | Halteres: inicio e fim de peso, gordura e massa magra |
 | 2 | Composicao | Areas empilhadas gordura + massa magra = peso, no tempo |
 | 3 | Semana a semana | Barras divergentes por intervalo, com a balanca como losango |
-| 4 | Dois momentos | Os dois intervalos de menos de 500 g, lado a lado |
+| 4 | Quando a balanca quase nao se mexe | Cada intervalo de menos de 500 g, lado a lado |
 | 5 | Mapa do corpo | Grafo em forma de corpo, com data deslizante e troca gordura/musculo |
 | 6 | Por dentro | Ponteiro de gordura visceral + pontuacao e idade corporal |
 | 7 | A rota | IMC sobre as faixas de classificacao + caminho ate a meta de 60 kg |
@@ -20,16 +20,22 @@ primeiro, e o desktop apenas se acomoda.
 | 9 | 31 de julho | A medicao com altura errada, e o que dela foi aproveitado |
 | 10 | Sinais brutos | Mapa de calor das impedancias, normalizado por segmento |
 
-## Os dois momentos
+## Quando a balanca quase nao se mexe
 
-O eixo da pagina. Duas vezes a balanca andou menos de meio quilo, por motivos opostos:
+O eixo da pagina. Tres vezes ate agora a balanca andou menos de meio quilo, e nao
+pelo mesmo motivo:
 
 - **06 → 13 de agosto, −0,4 kg.** Gordura −1,3 kg, musculo **+0,9 kg**. Um compensou o outro.
 - **28 de agosto → 3 de setembro, −0,3 kg.** Gordura **0,0 kg**, musculo **−0,3 kg**.
+- **08 → 15 de outubro, +0,3 kg.** Gordura **0,0 kg**, musculo **+0,2 kg**. A balanca
+  subiu e nada do que entrou era gordura.
 
-Mesma leitura, sinal trocado. `src/lib/derivar.js` marca esses intervalos sozinho
-(`quaseParada`, `|dPeso| < 0.5`), sem lista fixa: se entrarem novas medicoes, o
-destaque se move junto.
+`src/lib/derivar.js` marca esses intervalos sozinho (`quaseParada`, `|dPeso| < 0.5`),
+sem lista fixa, e o titulo da secao conta quantos sao. O texto de cada painel e
+escrito a mao para os intervalos que ja aconteceram; um intervalo novo cai em
+`narrativaDerivada()`, montada a partir dos proprios numeros. Antes dessa funcao,
+um terceiro quase-parado deixava a pagina inteira em branco, porque o objeto de
+narrativas so conhecia dois.
 
 ## A gordura parada
 
@@ -40,8 +46,14 @@ caiu 0,9 kg e o musculo caiu 0,9 kg, entao o percentual de gordura SUBIU enquant
 ela emagrecia.
 
 Em 25/09 a gordura voltou a se mexer, `medicoes` virou 1, o aviso sumiu e o titulo
-da abertura trocou sozinho. Nada disso foi editado a mao: o titulo e o aviso saem
-da derivacao, e voltam no dia em que a gordura empacar de novo.
+da abertura trocou sozinho. Em 15/10 ela parou de novo, nos mesmos 24,0 kg de 08/10,
+e o aviso voltou.
+
+So que desta vez parou para o outro lado, e o texto fixo mentiria: a balanca SUBIU
+0,3 kg, o musculo subiu 0,2 kg e o percentual de gordura CAIU. O aviso que existia
+dizia o contrario disso ("o peso que saiu era musculo", "o percentual subiu"). Agora
+`GORDURA_PARADA.musculoCaiu` separa os dois casos, e cada um tem o seu texto, a sua
+cor e o seu titulo.
 
 ## Numeros derivados, nao digitados
 
@@ -55,11 +67,11 @@ editar UM arquivo (`src/data/sessoes.js`); o resto da pagina se reescreve.
 `META_PESO` em `src/lib/derivar.js`. Veio de fora dos laudos, e por isso esta
 declarada la em cima como constante e nao inferida de campo nenhum.
 
-Os laudos trazem um `pesoAlvo` proprio (49,9 kg no laudo mais recente), que e a
+Os laudos trazem um `pesoAlvo` proprio (50,2 kg no laudo mais recente), que e a
 sugestao do aparelho a partir de altura e idade. Esse campo continua nos dados, mas
 nao manda em nada: a barra de progresso e a linha pontilhada dos graficos usam os
 60 kg. Nessa meta o IMC fica em 26,0, logo acima da faixa saudavel, e o caminho de
-71,0 kg ate la esta 76% andado.
+71,0 kg ate la esta 74% andado.
 
 ## A segunda balanca
 
@@ -74,9 +86,14 @@ sobre quanto daquele peso e gordura, e nos primeiros seis dias apontaram direcoe
 opostas: a primeira viu a gordura subir 0,3 kg, a segunda viu cair 0,3 kg. Com dois
 pontos nenhuma provou nada, e a secao diz isso.
 
-A segunda nao mediu em 08/10. `SO_BALANCA_1` em `derivar.js` lista os dias em que
-so a primeira mediu depois que a segunda ja existia, e a legenda da secao diz onde
-a comparacao para enquanto a serie principal segue.
+A segunda nao mediu em 08/10, voltou em 15/10. `SO_BALANCA_1` em `derivar.js` lista
+os dias em que so a primeira mediu depois que a segunda ja existia, e a legenda da
+secao diz onde a comparacao para enquanto a serie principal segue.
+
+Com o terceiro par, a discordancia de DIRECAO deixou de valer: no intervalo inteiro
+(25/09 a 15/10) as duas veem gordura caindo, −1,3 kg numa e −0,9 kg na outra. O
+titulo da secao e o aviso saem de `CONFRONTO.direcaoOposta`, entao os dois trocaram
+sozinhos. A diferenca de NIVEL continua, e e ela que a secao mostra agora.
 
 A segunda balanca traz tres medidas que a primeira nao da: angulo de fase, idade
 celular e a divisao da agua entre dentro e fora das celulas.

@@ -86,7 +86,9 @@ export default function Abertura() {
     <Secao
       olho={`${porExtenso(primeira.data)} a ${porExtenso(ultima.data)} de ${ultima.data.slice(0, 4)} · ${RESUMO.medicoes} medições`}
       titulo={parou
-        ? `${n1(Math.abs(RESUMO.dPeso))} kg a menos. Mas a gordura parou.`
+        ? (GORDURA_PARADA.musculoCaiu
+            ? `${n1(Math.abs(RESUMO.dPeso))} kg a menos. Mas a gordura parou.`
+            : `${n1(Math.abs(RESUMO.dPeso))} kg a menos. A gordura parou, o músculo não.`)
         : `${n1(Math.abs(RESUMO.dPeso))} kg a menos, e ${n1(RESUMO.fracaoGordura)}% vieram da gordura.`}
     >
       <div className="heroNum">
@@ -95,15 +97,30 @@ export default function Abertura() {
       </div>
 
       {parou && (
-        <div className="aviso" style={{ background: 'rgba(251,191,36,.07)', borderColor: 'rgba(251,191,36,.32)' }}>
-          <span className="mk">⚠</span>
+        <div
+          className="aviso"
+          style={GORDURA_PARADA.musculoCaiu
+            ? { background: 'rgba(251,191,36,.07)', borderColor: 'rgba(251,191,36,.32)' }
+            : { background: 'rgba(45,212,191,.06)', borderColor: 'rgba(45,212,191,.28)' }}
+        >
+          <span className="mk">{GORDURA_PARADA.musculoCaiu ? '⚠' : 'ℹ'}</span>
           <span className="tx">
             A gordura está em <b>{n1(GORDURA_PARADA.valor)} kg</b> há{' '}
             <b>{GORDURA_PARADA.medicoes} medições</b>, desde {GORDURA_PARADA.de.rotulo}.
-            Nesses {GORDURA_PARADA.dias} dias a balança caiu <b>{n1(Math.abs(GORDURA_PARADA.dPeso))} kg</b>{' '}
-            e o músculo caiu <b>{n1(Math.abs(GORDURA_PARADA.dMusculo))} kg</b>: o peso que saiu era músculo.
-            Por isso o percentual de gordura <b>subiu</b> {dPp(GORDURA_PARADA.dPercGordura)} no período,
-            mesmo ela pesando menos.
+            {GORDURA_PARADA.musculoCaiu ? (
+              <> Nesses {GORDURA_PARADA.dias} dias a balança caiu <b>{n1(Math.abs(GORDURA_PARADA.dPeso))} kg</b>{' '}
+                e o músculo caiu <b>{n1(Math.abs(GORDURA_PARADA.dMusculo))} kg</b>: o peso que saiu era músculo.
+                Por isso o percentual de gordura <b>subiu</b> {dPp(GORDURA_PARADA.dPercGordura)} no período,
+                mesmo ela pesando menos.</>
+            ) : (
+              <> Mas parada não quer dizer parado: nesses {GORDURA_PARADA.dias} dias o músculo{' '}
+                <b>subiu {n1(GORDURA_PARADA.dMusculo)} kg</b>
+                {GORDURA_PARADA.dPeso > 0
+                  ? <> e a balança subiu {n1(GORDURA_PARADA.dPeso)} kg, sem que a gordura subisse junto</>
+                  : <>, enquanto a balança {GORDURA_PARADA.dPeso < 0 ? `caiu ${n1(Math.abs(GORDURA_PARADA.dPeso))} kg` : 'não se mexeu'}</>}.
+                O percentual de gordura <b>caiu {n1(Math.abs(GORDURA_PARADA.dPercGordura))} p.p.</b>{' '}
+                com a gordura no mesmo número.</>
+            )}
           </span>
         </div>
       )}

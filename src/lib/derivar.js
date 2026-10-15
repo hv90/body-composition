@@ -59,6 +59,21 @@ export const MAIOR_GANHO_MUSCULO = INTERVALOS.reduce((a, b) => b.dMusculo > a.dM
 // próprio medidor não mostra.
 export const faixaVisceral = v => (v <= 9 ? 'verde' : v <= 14 ? 'amarela' : 'vermelha')
 
+// A leitura de tronco mais baixa do histórico, e a faixa em que as outras caem.
+// O rodapé do mapa de calor dizia "16 a 17" à mão e já estava 0,2 fora quando
+// uma medição nova entrou. Agora a faixa é contada, não lembrada.
+export const TRONCO_FORA_DO_PADRAO = (() => {
+  const todas = TODAS.map(s => ({ sessao: s, valor: s.z100.tronco }))
+  const fora = todas.reduce((a, b) => (b.valor < a.valor ? b : a))
+  const resto = todas.filter(x => x !== fora).map(x => x.valor)
+  return {
+    sessao: fora.sessao,
+    valor: fora.valor,
+    min: Math.min(...resto),
+    max: Math.max(...resto)
+  }
+})()
+
 export const RESUMO = {
   dias: diasEntre(primeira.data, ultima.data),
   medicoes: TODAS.length,
@@ -91,7 +106,10 @@ export const GORDURA_PARADA = (() => {
     dias: diasEntre(de.data, ultima.data),
     dPeso: r1(ultima.peso - de.peso),
     dMusculo: r1(ultima.muscular - de.muscular),
-    dPercGordura: r1(ultima.percGordura - de.percGordura)
+    dPercGordura: r1(ultima.percGordura - de.percGordura),
+    // Gordura parada com músculo caindo e gordura parada com músculo subindo são
+    // notícias opostas. Sem esta marca a tela conta a pior das duas nos dois casos.
+    musculoCaiu: r1(ultima.muscular - de.muscular) < 0
   }
 })()
 
