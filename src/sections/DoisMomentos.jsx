@@ -31,6 +31,12 @@ const NARRATIVA = {
     titulo: 'A balança subiu, e subiu de músculo',
     texto: 'A gordura ficou nos mesmos 24,0 kg e o músculo subiu 0,2 kg. A balança marcou 300 gramas a mais sem que nada disso fosse gordura, e o percentual de gordura caiu mesmo com ela subindo.',
     tom: 'bom'
+  },
+  '23/out': {
+    quando: '15 a 23 de outubro · 8 dias',
+    titulo: 'Os 100 gramas eram gordura, e só gordura',
+    texto: 'O músculo não se mexeu nem um grama: 36,4 kg antes e depois. A gordura caiu 0,3 kg, então a massa magra subiu 0,2 kg e a balança marcou só 100 gramas a menos. Tudo o que saiu era gordura.',
+    tom: 'bom'
   }
 }
 
@@ -39,11 +45,14 @@ const NARRATIVA = {
 function narrativaDerivada(ev) {
   const subiuMusculo = ev.dMusculo > 0
   const gorduraParada = ev.dGordura === 0
+  const musculoParado = ev.dMusculo === 0
   return {
     quando: `${ev.de.rotulo} a ${ev.para.rotulo} · ${ev.dias} dias`,
     titulo: subiuMusculo
       ? (gorduraParada ? 'A gordura parou, o músculo subiu' : 'Trocou gordura por músculo')
-      : (gorduraParada ? 'O peso saiu do músculo' : 'A balança quase não se mexeu'),
+      : musculoParado
+        ? (gorduraParada ? 'Nada se mexeu por dentro' : 'O peso que saiu era gordura')
+        : (gorduraParada ? 'O peso saiu do músculo' : 'A balança quase não se mexeu'),
     texto: `A balança marcou ${dKg(ev.dPeso)}. Por dentro: gordura ${dKg(ev.dGordura)}` +
       ` e músculo ${dKg(ev.dMusculo)}.`,
     tom: ev.dMusculo >= 0 ? 'bom' : 'ruim'

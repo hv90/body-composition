@@ -12,6 +12,15 @@ export default function SemanaASemana() {
       .map((i, idx) => (i.quaseParada ? idx : -1))
       .filter(i => i >= 0)
 
+    // Índices vizinhos viram UMA faixa só. Duas bandas encostadas pintam a emenda
+    // duas vezes, e a costura aparece como um tom diferente no meio do destaque.
+    const faixas = destaque.reduce((acc, d) => {
+      const ultima = acc[acc.length - 1]
+      if (ultima && d === ultima[1] + 1) ultima[1] = d
+      else acc.push([d, d])
+      return acc
+    }, [])
+
     return {
       animationDuration: 700,
       grid: { left: 34, right: 14, top: 46, bottom: 52 },
@@ -48,7 +57,7 @@ export default function SemanaASemana() {
             silent: true,
             itemStyle: { color: 'rgba(251,191,36,0.10)' },
             label: { show: false },
-            data: destaque.map(d => [{ xAxis: d - 0.5 }, { xAxis: d + 0.5 }])
+            data: faixas.map(([a, b]) => [{ xAxis: a - 0.5 }, { xAxis: b + 0.5 }])
           }
         },
         {

@@ -1,7 +1,7 @@
 # Composicao corporal em graficos
 
-Doze laudos de bioimpedancia da balanca que acompanha a serie desde julho, de
-23/07/2026 a 15/10/2026, mais tres de uma segunda balanca que entrou em 25/09,
+Treze laudos de bioimpedancia da balanca que acompanha a serie desde julho, de
+23/07/2026 a 23/10/2026, mais tres de uma segunda balanca que entrou em 25/09,
 virados em uma pagina de graficos ECharts. Mobile-first: tudo foi desenhado para 375 px de largura
 primeiro, e o desktop apenas se acomoda.
 
@@ -22,13 +22,15 @@ primeiro, e o desktop apenas se acomoda.
 
 ## Quando a balanca quase nao se mexe
 
-O eixo da pagina. Tres vezes ate agora a balanca andou menos de meio quilo, e nao
+O eixo da pagina. Quatro vezes ate agora a balanca andou menos de meio quilo, e nao
 pelo mesmo motivo:
 
 - **06 → 13 de agosto, −0,4 kg.** Gordura −1,3 kg, musculo **+0,9 kg**. Um compensou o outro.
 - **28 de agosto → 3 de setembro, −0,3 kg.** Gordura **0,0 kg**, musculo **−0,3 kg**.
 - **08 → 15 de outubro, +0,3 kg.** Gordura **0,0 kg**, musculo **+0,2 kg**. A balanca
   subiu e nada do que entrou era gordura.
+- **15 → 23 de outubro, −0,1 kg.** Gordura **−0,3 kg**, musculo **0,0 kg**. Os 100
+  gramas que a balanca marcou eram gordura, e a massa magra subiu 0,2 kg.
 
 `src/lib/derivar.js` marca esses intervalos sozinho (`quaseParada`, `|dPeso| < 0.5`),
 sem lista fixa, e o titulo da secao conta quantos sao. O texto de cada painel e
@@ -36,6 +38,12 @@ escrito a mao para os intervalos que ja aconteceram; um intervalo novo cai em
 `narrativaDerivada()`, montada a partir dos proprios numeros. Antes dessa funcao,
 um terceiro quase-parado deixava a pagina inteira em branco, porque o objeto de
 narrativas so conhecia dois.
+
+O quarto (15 → 23/10) foi o primeiro a cair na derivacao, e ela segurou: a pagina
+renderizou inteira. O texto que saiu dela era correto e fraco ("A balanca quase nao
+se mexeu", que so repete o titulo da secao), entao o intervalo ganhou o seu texto a
+mao e a derivacao ganhou o ramo que faltava, para o caso de a gordura cair com o
+musculo exatamente parado.
 
 ## A gordura parada
 
@@ -47,7 +55,8 @@ ela emagrecia.
 
 Em 25/09 a gordura voltou a se mexer, `medicoes` virou 1, o aviso sumiu e o titulo
 da abertura trocou sozinho. Em 15/10 ela parou de novo, nos mesmos 24,0 kg de 08/10,
-e o aviso voltou.
+e o aviso voltou. Em 23/10 andou outra vez (23,7 kg) e o aviso sumiu de novo, sem
+ninguem editar nada.
 
 So que desta vez parou para o outro lado, e o texto fixo mentiria: a balanca SUBIU
 0,3 kg, o musculo subiu 0,2 kg e o percentual de gordura CAIU. O aviso que existia
@@ -67,11 +76,11 @@ editar UM arquivo (`src/data/sessoes.js`); o resto da pagina se reescreve.
 `META_PESO` em `src/lib/derivar.js`. Veio de fora dos laudos, e por isso esta
 declarada la em cima como constante e nao inferida de campo nenhum.
 
-Os laudos trazem um `pesoAlvo` proprio (50,2 kg no laudo mais recente), que e a
+Os laudos trazem um `pesoAlvo` proprio (50,3 kg no laudo mais recente), que e a
 sugestao do aparelho a partir de altura e idade. Esse campo continua nos dados, mas
 nao manda em nada: a barra de progresso e a linha pontilhada dos graficos usam os
 60 kg. Nessa meta o IMC fica em 26,0, logo acima da faixa saudavel, e o caminho de
-71,0 kg ate la esta 74% andado.
+71,0 kg ate la esta 75% andado.
 
 ## A segunda balanca
 
@@ -86,7 +95,7 @@ sobre quanto daquele peso e gordura, e nos primeiros seis dias apontaram direcoe
 opostas: a primeira viu a gordura subir 0,3 kg, a segunda viu cair 0,3 kg. Com dois
 pontos nenhuma provou nada, e a secao diz isso.
 
-A segunda nao mediu em 08/10, voltou em 15/10. `SO_BALANCA_1` em `derivar.js` lista
+A segunda nao mediu em 08/10 nem em 23/10. `SO_BALANCA_1` em `derivar.js` lista
 os dias em que so a primeira mediu depois que a segunda ja existia, e a legenda da
 secao diz onde a comparacao para enquanto a serie principal segue.
 

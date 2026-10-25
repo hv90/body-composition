@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Fonte: 12 laudos Fitdays "Relatório de análise de composição corporal",
+// Fonte: 13 laudos Fitdays "Relatório de análise de composição corporal",
 // a balança que acompanha a série desde julho. Transcrição literal dos PDFs.
 // Nenhum valor foi calculado aqui.
 //
@@ -215,6 +215,21 @@ export const SESSOES = [
     musculoSegPerc: { bracoE: 97.4,  bracoD: 95.7,  tronco: 94.4,  pernaE: 98.8,  pernaD: 98.7 },
     z20:  { bracoD: 385.7, bracoE: 380.6, tronco: 20.5, pernaD: 272.1, pernaE: 270.7 },
     z100: { bracoD: 350.0, bracoE: 341.9, tronco: 15.9, pernaD: 243.9, pernaE: 243.2 }
+  },
+  {
+    data: '2026-10-23', rotulo: '23/out', hora: '12:51', idLaudo: 'perfil A',
+    alturaRelatada: 152, composicaoValida: true,
+    peso: 62.8, gordura: 23.7, ossea: 2.6, proteica: 7.8, agua: 28.6,
+    muscular: 36.4, esqueletico: 21.2,
+    pontuacao: 69, imc: 27.2, percGordura: 37.8, obesidadePerc: 129,
+    pesoAlvo: 50.3, visceral: 10, tmb: 1212, livreGordura: 39.0,
+    subcutanea: 26.9, smi: 7.0, idadeCorporal: 66, whr: 0.85,
+    gorduraSeg:     { bracoE: 1.6,   bracoD: 1.7,   tronco: 12.9,  pernaE: 3.7,   pernaD: 3.6 },
+    gorduraSegPerc: { bracoE: 191.7, bracoD: 194.8, tronco: 281.5, pernaE: 179.0, pernaD: 178.8 },
+    musculoSeg:     { bracoE: 1.9,   bracoD: 1.9,   tronco: 16.9,  pernaE: 6.2,   pernaD: 6.2 },
+    musculoSegPerc: { bracoE: 97.1,  bracoD: 95.8,  tronco: 94.6,  pernaE: 98.9,  pernaD: 98.8 },
+    z20:  { bracoD: 388.1, bracoE: 384.5, tronco: 19.3, pernaD: 275.5, pernaE: 278.5 },
+    z100: { bracoD: 351.3, bracoE: 344.9, tronco: 14.4, pernaD: 247.1, pernaE: 250.5 }
   }
 ]
 

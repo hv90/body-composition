@@ -15,7 +15,7 @@ export default function MedicaoInvalida() {
 
     return {
       animationDuration: 800,
-      grid: { left: 36, right: 16, top: 38, bottom: 44 },
+      grid: { left: 36, right: 16, top: 38, bottom: 62 },
       legend: {
         type: 'scroll', bottom: 2, itemWidth: 10, itemHeight: 10, itemGap: 14,
         textStyle: { color: C.fraco, fontSize: 11 }, inactiveColor: C.tenue
@@ -32,7 +32,7 @@ export default function MedicaoInvalida() {
       },
       xAxis: {
         type: 'category', data: rot, boundaryGap: false,
-        axisLabel: { ...eixoTexto, fontSize: 8.5, interval: 0 }, axisLine: { lineStyle: { color: C.borda } }, axisTick: { show: false }
+        axisLabel: { ...eixoTexto, fontSize: 9, interval: 0, rotate: 45, align: 'right' }, axisLine: { lineStyle: { color: C.borda } }, axisTick: { show: false }
       },
       yAxis: {
         type: 'value', min: 26, max: 48, interval: 4,
