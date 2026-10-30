@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import Grafico from '../components/Grafico.jsx'
 import Secao from '../components/Secao.jsx'
 import { C, tooltipBase, eixoTexto } from '../lib/tema.js'
-import { TODAS, TRONCO_FORA_DO_PADRAO } from '../lib/derivar.js'
+import { TODAS, TRONCO_FORA_DO_PADRAO, TRONCO_QUEDA_FINAL } from '../lib/derivar.js'
 import { SEGMENTOS } from '../data/sessoes.js'
 import { n1 } from '../lib/fmt.js'
 
@@ -88,10 +88,15 @@ export default function Sinais() {
       </div>
       <p className="legenda" style={{ marginTop: 10 }}>
         O quadrado verde-água do tronco em {TRONCO_FORA_DO_PADRAO.sessao.rotulo} é uma
-        leitura fora do padrão: {n1(TRONCO_FORA_DO_PADRAO.valor)} Ω contra
-        os {n1(TRONCO_FORA_DO_PADRAO.min)} a {n1(TRONCO_FORA_DO_PADRAO.max)} dos
-        outros dias. Nada mais naquele laudo destoa, então provavelmente foi contato
-        de pele, e não o corpo.
+        leitura fora do padrão: {n1(TRONCO_FORA_DO_PADRAO.valor)} Ω espremido entre um
+        dia de {n1(TRONCO_FORA_DO_PADRAO.antes.valor)} e outro
+        de {n1(TRONCO_FORA_DO_PADRAO.depois.valor)}. Nada mais naquele laudo destoa,
+        então provavelmente foi contato de pele, e não o corpo.
+        {TRONCO_QUEDA_FINAL && <>{' '}No fim da série o tronco desce por conta própria,
+          de {n1(TRONCO_QUEDA_FINAL.de.valor)} Ω em {TRONCO_QUEDA_FINAL.de.sessao.rotulo} a{' '}
+          {n1(TRONCO_QUEDA_FINAL.para.valor)} em {TRONCO_QUEDA_FINAL.para.sessao.rotulo},{' '}
+          {TRONCO_QUEDA_FINAL.medicoes} medições seguidas. Isso é outra coisa, e o mapa
+          mostra sem explicar: {TRONCO_QUEDA_FINAL.medicoes} pontos não dizem a causa.</>}
       </p>
     </Secao>
   )

@@ -1,7 +1,7 @@
 # Composicao corporal em graficos
 
-Treze laudos de bioimpedancia da balanca que acompanha a serie desde julho, de
-23/07/2026 a 23/10/2026, mais tres de uma segunda balanca que entrou em 25/09,
+Catorze laudos de bioimpedancia da balanca que acompanha a serie desde julho, de
+23/07/2026 a 29/10/2026, mais quatro de uma segunda balanca que entrou em 25/09,
 virados em uma pagina de graficos ECharts. Mobile-first: tudo foi desenhado para 375 px de largura
 primeiro, e o desktop apenas se acomoda.
 
@@ -80,7 +80,7 @@ Os laudos trazem um `pesoAlvo` proprio (50,3 kg no laudo mais recente), que e a
 sugestao do aparelho a partir de altura e idade. Esse campo continua nos dados, mas
 nao manda em nada: a barra de progresso e a linha pontilhada dos graficos usam os
 60 kg. Nessa meta o IMC fica em 26,0, logo acima da faixa saudavel, e o caminho de
-71,0 kg ate la esta 75% andado.
+71,0 kg ate la esta 81% andado.
 
 ## A segunda balanca
 
@@ -100,9 +100,14 @@ os dias em que so a primeira mediu depois que a segunda ja existia, e a legenda 
 secao diz onde a comparacao para enquanto a serie principal segue.
 
 Com o terceiro par, a discordancia de DIRECAO deixou de valer: no intervalo inteiro
-(25/09 a 15/10) as duas veem gordura caindo, −1,3 kg numa e −0,9 kg na outra. O
-titulo da secao e o aviso saem de `CONFRONTO.direcaoOposta`, entao os dois trocaram
-sozinhos. A diferenca de NIVEL continua, e e ela que a secao mostra agora.
+as duas veem gordura caindo. O titulo da secao e o aviso saem de
+`CONFRONTO.direcaoOposta`, entao os dois trocaram sozinhos. A diferenca de NIVEL
+continua sendo o assunto da secao.
+
+Em 29/10 a diferenca de nivel tambem sumiu: as duas mediram **23,0 kg** de gordura
+no mesmo dia, depois de terem chegado a 2,5 kg de distancia. O cartao do dia tem um
+texto proprio para quando a diferenca e exatamente zero, porque "0,0 kg de diferenca"
+e uma frase que ninguem escreveria.
 
 A segunda balanca traz tres medidas que a primeira nao da: angulo de fase, idade
 celular e a divisao da agua entre dentro e fora das celulas.
@@ -116,6 +121,36 @@ campo, e a tela diz de quando ela e quando nao e a ultima.
 O laudo de 08/10 saiu num perfil de visitante do aparelho. Isso so importaria se o
 perfil carregasse altura ou idade erradas, como em 31/07: o cabecalho traz 152 cm e
 64 anos, entao a composicao vale.
+
+## O ponto fora do padrao do tronco
+
+O rodape do mapa de calor explica o quadrado verde-agua do tronco em 13/08 como
+provavel falha de contato de pele. `TRONCO_FORA_DO_PADRAO` em `derivar.js` achava
+esse ponto pegando a MENOR leitura do historico, e isso quebrou em 29/10.
+
+O tronco vinha caindo de verdade no fim da serie (16,0 · 16,0 · 15,9 · 14,4 · 10,6),
+entao o minimo global passou a ser a medicao mais recente, e o rodape ia chamar de
+falha de contato o fim de uma queda real. Um ponto fora do padrao e o que destoa de
+QUEM ESTA AO LADO dele, nao o menor de todos: a derivacao agora compara cada leitura
+com a media dos seus vizinhos imediatos e devolve a de maior desvio, com os dois
+vizinhos junto. 13/08 continua ganhando (12,2 entre 17,3 e 16,7, desvio 4,8), e o
+texto passou a citar os vizinhos em vez da faixa global, que e a evidencia real da
+frase.
+
+A queda do tronco no fim da serie continua visivel no mapa, sem explicacao colada:
+tres leituras nao sustentam uma conclusao sobre o que a causou.
+
+## Quando o laudo nao traz um campo
+
+Acontece duas vezes nesta serie, por motivos diferentes, e o tratamento e o mesmo:
+o campo SOME do registro em vez de ser preenchido com um numero inventado.
+
+- `whr` nos laudos de 25/09 e 01/10, que a atualizacao de software deixou de imprimir.
+- `idadeCelular` no laudo da segunda balanca de 29/10, que imprimiu **N/D**.
+
+`ultimoCom(campo, lista)` devolve a medicao mais recente que ainda tem o campo, e a
+tela diz de quando ela e quando nao e a ultima. `CONFRONTO.dIdadeCelular` virou `null`
+em vez de `NaN` quando uma das pontas nao tem o valor.
 
 ## A medicao de 31/07
 

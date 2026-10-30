@@ -25,7 +25,7 @@ export const diasEntre = (a, b) => Math.round((ts(b) - ts(a)) / 86400000)
 // Nem todo laudo traz todo campo: a atualização de software de 25/09 parou de
 // imprimir a relação cintura/quadril. Isto devolve a medição mais recente que
 // ainda tem o campo, para a tela poder dizer de quando é o número que mostra.
-export const ultimoCom = campo => [...VALIDAS].reverse().find(s => s[campo] != null)
+export const ultimoCom = (campo, lista = VALIDAS) => [...lista].reverse().find(s => s[campo] != null)
 
 // Um intervalo por par de medições válidas consecutivas.
 export const INTERVALOS = VALIDAS.slice(1).map((s, i) => {
@@ -59,19 +59,37 @@ export const MAIOR_GANHO_MUSCULO = INTERVALOS.reduce((a, b) => b.dMusculo > a.dM
 // próprio medidor não mostra.
 export const faixaVisceral = v => (v <= 9 ? 'verde' : v <= 14 ? 'amarela' : 'vermelha')
 
-// A leitura de tronco mais baixa do histórico, e a faixa em que as outras caem.
-// O rodapé do mapa de calor dizia "16 a 17" à mão e já estava 0,2 fora quando
-// uma medição nova entrou. Agora a faixa é contada, não lembrada.
+// A leitura de tronco que mais discorda dos SEUS VIZINHOS, e quais são eles.
+// Começou como "a menor leitura do histórico", e isso quebrou em 29/10: o tronco
+// vinha descendo de verdade (16,0 · 15,9 · 14,4 · 10,6), então o mínimo global
+// passou a ser a medição mais recente, e o rodapé ia chamar de falha de contato
+// o fim de uma queda real. Um ponto fora do padrão é o que destoa de quem está
+// ao lado dele, não o menor de todos.
 export const TRONCO_FORA_DO_PADRAO = (() => {
   const todas = TODAS.map(s => ({ sessao: s, valor: s.z100.tronco }))
-  const fora = todas.reduce((a, b) => (b.valor < a.valor ? b : a))
-  const resto = todas.filter(x => x !== fora).map(x => x.valor)
-  return {
-    sessao: fora.sessao,
-    valor: fora.valor,
-    min: Math.min(...resto),
-    max: Math.max(...resto)
-  }
+  let pior = null
+  todas.forEach((x, i) => {
+    const vizinhos = [todas[i - 1], todas[i + 1]].filter(Boolean)
+    if (!vizinhos.length) return
+    const media = vizinhos.reduce((acc, v) => acc + v.valor, 0) / vizinhos.length
+    const desvio = Math.abs(x.valor - media)
+    if (!pior || desvio > pior.desvio) {
+      pior = { sessao: x.sessao, valor: x.valor, desvio, antes: todas[i - 1], depois: todas[i + 1] }
+    }
+  })
+  return pior
+})()
+
+// A corrida de quedas seguidas no fim da série do tronco. Existe porque o mapa
+// passou a mostrar TRÊS quadrados verde-água na linha do tronco, e o rodapé explica
+// só um deles: sem esta frase, o leitor atribui a mesma causa aos outros dois.
+// Não diz o que causou, só que a queda está lá e que é outra coisa.
+export const TRONCO_QUEDA_FINAL = (() => {
+  const v = TODAS.map(s => ({ sessao: s, valor: s.z100.tronco }))
+  let i = v.length - 1
+  while (i > 0 && v[i - 1].valor > v[i].valor) i--
+  const medicoes = v.length - i
+  return medicoes >= 3 ? { medicoes, de: v[i], para: v[v.length - 1] } : null
 })()
 
 export const RESUMO = {
@@ -160,7 +178,9 @@ export const CONFRONTO = (() => {
     direcaoOposta: dGorduraBase !== 0 && dGorduraLumi !== 0 &&
       Math.sign(dGorduraBase) !== Math.sign(dGorduraLumi),
     dAnguloFase: r1(b.lumi.anguloFase - a.lumi.anguloFase),
-    dIdadeCelular: b.lumi.idadeCelular - a.lumi.idadeCelular,
+    dIdadeCelular: (b.lumi.idadeCelular != null && a.lumi.idadeCelular != null)
+      ? b.lumi.idadeCelular - a.lumi.idadeCelular
+      : null,
     // Maior distância entre as duas leituras de gordura, em kg, nos dias pareados.
     maiorDifGordura: PARES.reduce((m, p) => Math.abs(p.difGordura) > Math.abs(m) ? p.difGordura : m, 0),
     maiorDifPeso: PARES.reduce((m, p) => Math.abs(p.difPeso) > Math.abs(m) ? p.difPeso : m, 0)

@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Fonte: 13 laudos Fitdays "Relatório de análise de composição corporal",
+// Fonte: 14 laudos Fitdays "Relatório de análise de composição corporal",
 // a balança que acompanha a série desde julho. Transcrição literal dos PDFs.
 // Nenhum valor foi calculado aqui.
 //
@@ -230,6 +230,21 @@ export const SESSOES = [
     musculoSegPerc: { bracoE: 97.1,  bracoD: 95.8,  tronco: 94.6,  pernaE: 98.9,  pernaD: 98.8 },
     z20:  { bracoD: 388.1, bracoE: 384.5, tronco: 19.3, pernaD: 275.5, pernaE: 278.5 },
     z100: { bracoD: 351.3, bracoE: 344.9, tronco: 14.4, pernaD: 247.1, pernaE: 250.5 }
+  },
+  {
+    data: '2026-10-29', rotulo: '29/out', hora: '13:08', idLaudo: 'perfil A',
+    alturaRelatada: 152, composicaoValida: true,
+    peso: 62.1, gordura: 23.0, ossea: 2.6, proteica: 7.8, agua: 28.7,
+    muscular: 36.5, esqueletico: 21.3,
+    pontuacao: 70, imc: 26.9, percGordura: 37.1, obesidadePerc: 128,
+    pesoAlvo: 50.3, visceral: 9, tmb: 1214, livreGordura: 39.1,
+    subcutanea: 26.4, smi: 7.0, idadeCorporal: 66, whr: 0.84,
+    gorduraSeg:     { bracoE: 1.6,   bracoD: 1.6,   tronco: 12.8,  pernaE: 3.5,   pernaD: 3.5 },
+    gorduraSegPerc: { bracoE: 186.3, bracoD: 187.4, tronco: 279.0, pernaE: 173.6, pernaD: 173.2 },
+    musculoSeg:     { bracoE: 1.9,   bracoD: 1.9,   tronco: 16.9,  pernaE: 6.2,   pernaD: 6.2 },
+    musculoSegPerc: { bracoE: 96.3,  bracoD: 96.2,  tronco: 95.6,  pernaE: 99.8,  pernaD: 99.7 },
+    z20:  { bracoD: 394.3, bracoE: 397.3, tronco: 16.9, pernaD: 283.9, pernaE: 283.3 },
+    z100: { bracoD: 356.2, bracoE: 357.3, tronco: 10.6, pernaD: 254.3, pernaE: 254.6 }
   }
 ]
 
@@ -266,6 +281,16 @@ export const SESSOES_LUMI = [
     intracelular: 15.7, percIntracelular: 54.0,
     extracelular: 13.4, percExtracelular: 46.0,
     imc: 27.3, tmb: 1136, anguloFase: 6.7, idadeCelular: 60
+  },
+  {
+    data: '2026-10-29', rotulo: '29/out', hora: '13:12',
+    peso: 62.3, gorda: 23.0, percGordura: 36.9, magra: 39.3, percMagra: 63.1,
+    muscular: 15.7, percMuscular: 25.1, razaoMusculoGordura: 0.7,
+    aguaTotal: 27.7, percAguaTotal: 44.5, hidratacao: 2.5, aguaNaMassaMagra: 70.5,
+    intracelular: 15.1, percIntracelular: 54.3,
+    extracelular: 12.7, percExtracelular: 45.7,
+    imc: 27.0, tmb: 1107, anguloFase: 6.7
+    // idadeCelular: o laudo imprimiu N/D. Campo ausente em vez de inventado.
   }
 ]
 

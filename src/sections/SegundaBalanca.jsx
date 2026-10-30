@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import Grafico from '../components/Grafico.jsx'
 import Secao from '../components/Secao.jsx'
 import { C, tooltipBase, eixoTexto } from '../lib/tema.js'
-import { PARES, CONFRONTO, VALIDAS, SO_BALANCA_1, magra, lumiUltima, lumiPrimeira } from '../lib/derivar.js'
+import { PARES, CONFRONTO, VALIDAS, SO_BALANCA_1, LUMI, ultimoCom, magra, lumiUltima, lumiPrimeira } from '../lib/derivar.js'
 import { n1, dKg, dPp } from '../lib/fmt.js'
 
 // A segunda balança ganha uma cor própria. Mesmo tipo de gráfico da abertura,
@@ -11,6 +11,9 @@ const COR_B = C.osso
 
 export default function SegundaBalanca() {
   const ultimo = PARES[PARES.length - 1]
+  // O laudo de 29/10 imprimiu N/D na idade celular. O bloco mostra a última que
+  // existe e diz de quando ela é, em vez de ficar vazio ou inventar um número.
+  const idadeCel = ultimoCom('idadeCelular', LUMI)
 
   // Gordura dia a dia, uma linha por balança. Com duas linhas quase paralelas e
   // separadas por dois quilos, a distância entre elas é o próprio assunto.
@@ -45,7 +48,7 @@ export default function SegundaBalanca() {
         lineStyle: { color: C.gordura, width: 2.8 },
         itemStyle: { color: C.gordura, borderColor: C.fundo, borderWidth: 1.5 },
         endLabel: { show: true, color: C.gordura, fontSize: 12.5, fontWeight: 700,
-          formatter: p => n1(p.value) + ' kg', offset: [4, 0] }
+          formatter: p => n1(p.value) + ' kg', offset: [4, -9] }
       },
       {
         name: 'Balança 2', type: 'line', symbol: 'circle', symbolSize: 8,
@@ -53,7 +56,7 @@ export default function SegundaBalanca() {
         lineStyle: { color: COR_B, width: 2.8, type: 'dashed' },
         itemStyle: { color: COR_B, borderColor: C.fundo, borderWidth: 1.5 },
         endLabel: { show: true, color: COR_B, fontSize: 12.5, fontWeight: 700,
-          formatter: p => n1(p.value) + ' kg', offset: [4, 0] }
+          formatter: p => n1(p.value) + ' kg', offset: [4, 9] }
       }
     ]
   }), [])
@@ -120,9 +123,12 @@ export default function SegundaBalanca() {
         <Grafico opcao={lado} altura={236} aria={`Peso, gordura e massa magra em ${ultimo.rotulo} segundo as duas balanças`} />
         <div className="rodape">
           <b>{ultimo.rotulo}, as duas no mesmo dia.</b>{' '}
-          Mesmo peso na balança, {n1(Math.abs(ultimo.difGordura))} kg de diferença no que
-          elas chamam de gordura. Bioimpedância estima; cada aparelho estima com a
-          sua própria fórmula.
+          {ultimo.difGordura === 0
+            ? <>Mesmo peso na balança e, pela primeira vez, o mesmo número de gordura.
+                Bioimpedância estima; os dois aparelhos chegaram à mesma estimativa hoje.</>
+            : <>Mesmo peso na balança, {n1(Math.abs(ultimo.difGordura))} kg de diferença no que
+                elas chamam de gordura. Bioimpedância estima; cada aparelho estima com a
+                sua própria fórmula.</>}
         </div>
       </div>
 
@@ -162,8 +168,12 @@ export default function SegundaBalanca() {
         </div>
         <div className="tile">
           <div className="rot">Idade celular</div>
-          <div className="val">{lumiUltima.idadeCelular}</div>
-          <div className="sub">era {lumiPrimeira.idadeCelular} anos</div>
+          <div className="val">{idadeCel ? idadeCel.idadeCelular : '--'}</div>
+          <div className="sub">
+            {idadeCel
+              ? <>era {lumiPrimeira.idadeCelular} anos{idadeCel !== lumiUltima && <> · últ. {idadeCel.rotulo}</>}</>
+              : <>o laudo não trouxe</>}
+          </div>
         </div>
         <div className="tile">
           <div className="rot">Água na célula</div>

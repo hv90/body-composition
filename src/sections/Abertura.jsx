@@ -152,7 +152,7 @@ export default function Abertura() {
         <div className="tile">
           <div className="rot">Gordura visceral</div>
           <div className="val bom">{primeira.visceral} → {ultima.visceral}</div>
-          <div className="sub">meta abaixo de 10</div>
+          <div className="sub">{ultima.visceral < 10 ? 'meta abaixo de 10 atingida' : 'meta abaixo de 10'}</div>
         </div>
       </div>
     </Secao>
