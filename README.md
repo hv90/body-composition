@@ -1,7 +1,7 @@
 # Composicao corporal em graficos
 
-Catorze laudos de bioimpedancia da balanca que acompanha a serie desde julho, de
-23/07/2026 a 29/10/2026, mais quatro de uma segunda balanca que entrou em 25/09,
+Quinze laudos de bioimpedancia da balanca que acompanha a serie desde julho, de
+23/07/2026 a 13/11/2026, mais quatro de uma segunda balanca que entrou em 25/09,
 virados em uma pagina de graficos ECharts. Mobile-first: tudo foi desenhado para 375 px de largura
 primeiro, e o desktop apenas se acomoda.
 
@@ -80,7 +80,7 @@ Os laudos trazem um `pesoAlvo` proprio (50,3 kg no laudo mais recente), que e a
 sugestao do aparelho a partir de altura e idade. Esse campo continua nos dados, mas
 nao manda em nada: a barra de progresso e a linha pontilhada dos graficos usam os
 60 kg. Nessa meta o IMC fica em 26,0, logo acima da faixa saudavel, e o caminho de
-71,0 kg ate la esta 81% andado.
+71,0 kg ate la esta 89% andado.
 
 ## A segunda balanca
 
@@ -118,10 +118,6 @@ some das sessoes em que o aparelho nao o imprimiu, em vez de ser preenchido com 
 numero inventado; `ultimoCom('whr')` devolve a medicao mais recente que ainda tem o
 campo, e a tela diz de quando ela e quando nao e a ultima.
 
-O laudo de 08/10 saiu num perfil de visitante do aparelho. Isso so importaria se o
-perfil carregasse altura ou idade erradas, como em 31/07: o cabecalho traz 152 cm e
-64 anos, entao a composicao vale.
-
 ## O ponto fora do padrao do tronco
 
 O rodape do mapa de calor explica o quadrado verde-agua do tronco em 13/08 como
@@ -131,14 +127,22 @@ esse ponto pegando a MENOR leitura do historico, e isso quebrou em 29/10.
 O tronco vinha caindo de verdade no fim da serie (16,0 · 16,0 · 15,9 · 14,4 · 10,6),
 entao o minimo global passou a ser a medicao mais recente, e o rodape ia chamar de
 falha de contato o fim de uma queda real. Um ponto fora do padrao e o que destoa de
-QUEM ESTA AO LADO dele, nao o menor de todos: a derivacao agora compara cada leitura
-com a media dos seus vizinhos imediatos e devolve a de maior desvio, com os dois
+QUEM ESTA AO LADO dele, nao o menor de todos: a derivacao compara cada leitura com
+a media dos seus vizinhos imediatos e devolve a de maior desvio, com os dois
 vizinhos junto. 13/08 continua ganhando (12,2 entre 17,3 e 16,7, desvio 4,8), e o
-texto passou a citar os vizinhos em vez da faixa global, que e a evidencia real da
-frase.
+texto cita os vizinhos em vez da faixa global, que e a evidencia real da frase.
 
-A queda do tronco no fim da serie continua visivel no mapa, sem explicacao colada:
-tres leituras nao sustentam uma conclusao sobre o que a causou.
+**E preciso DOIS vizinhos, nao "pelo menos um".** Essa parte faltou na primeira
+versao e quebrou a pagina em 13/11. Uma PONTA da serie so tem um lado; comparada
+contra ele sozinha, ganha um desvio enorme sempre que esse unico vizinho for o
+anomalo. Em 13/11 o tronco voltou a 15,9 logo depois do 10,6 de 29/10, a ponta
+virou "o ponto fora do padrao" por estar do lado dele, e o rodape — que diz
+"espremido entre um dia e outro" — leu um segundo vizinho que nao existia e
+derrubou a tela. O texto ja presumia dois vizinhos; o codigo e que permitia um.
+
+A queda do tronco que parecia uma tendencia nao era: `TRONCO_QUEDA_FINAL` exigia
+tres quedas seguidas, 13/11 subiu de volta a 15,9, a corrida se quebrou e a frase
+sumiu sozinha. Foi o motivo de ela nunca ter dito a causa.
 
 ## Quando o laudo nao traz um campo
 
@@ -151,6 +155,12 @@ o campo SOME do registro em vez de ser preenchido com um numero inventado.
 `ultimoCom(campo, lista)` devolve a medicao mais recente que ainda tem o campo, e a
 tela diz de quando ela e quando nao e a ultima. `CONFRONTO.dIdadeCelular` virou `null`
 em vez de `NaN` quando uma das pontas nao tem o valor.
+
+## O perfil do aparelho
+
+Dois laudos (08/10 e 13/11) sairam num perfil de visitante da balanca em vez do
+perfil dela. Isso so importaria se o perfil carregasse altura ou idade erradas,
+como em 31/07: os dois cabecalhos trazem 152 cm e 64 anos, entao a composicao vale.
 
 ## A medicao de 31/07
 

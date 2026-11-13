@@ -65,12 +65,20 @@ export default function SemanaASemana() {
           barMaxWidth: 22, itemStyle: { color: C.musculo, borderRadius: 3 }
         },
         {
-          name: 'Balança', type: 'line', data: INTERVALOS.map(i => i.dPeso),
+          name: 'Balança', type: 'line',
+          // Com 14 intervalos os rótulos passaram a se encostar. Eles alternam acima
+          // e abaixo do losango, o que dobra o espaço horizontal disponível para cada
+          // um sem esconder nenhum número. label.position não aceita função no ECharts,
+          // então a posição vai item a item, como já acontece nas barras acima.
+          data: INTERVALOS.map((i, idx) => ({
+            value: i.dPeso,
+            label: { position: idx % 2 === 0 ? 'top' : 'bottom' }
+          })),
           symbol: 'diamond', symbolSize: 11, z: 6,
           lineStyle: { color: C.peso, width: 1.4, type: 'dotted' },
           itemStyle: { color: C.peso },
           label: {
-            show: true, position: 'top', color: C.texto, fontSize: 10.5, fontWeight: 600,
+            show: true, position: 'top', color: C.texto, fontSize: 10, fontWeight: 600,
             formatter: p => (p.value > 0 ? '+' : '−') + n1(Math.abs(p.value))
           },
           markLine: {

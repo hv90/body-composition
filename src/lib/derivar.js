@@ -70,7 +70,12 @@ export const TRONCO_FORA_DO_PADRAO = (() => {
   let pior = null
   todas.forEach((x, i) => {
     const vizinhos = [todas[i - 1], todas[i + 1]].filter(Boolean)
-    if (!vizinhos.length) return
+    // DOIS vizinhos, não "pelo menos um". Uma ponta da série só tem um lado, e
+    // comparada contra ele sozinho ganha um desvio enorme sempre que esse vizinho
+    // for o anômalo: em 13/11 a ponta virou "o ponto fora do padrão" só por estar
+    // ao lado de 29/10, e o rodapé (que diz "espremido entre um dia e outro")
+    // quebrava a página inteira ao ler o segundo vizinho inexistente.
+    if (vizinhos.length < 2) return
     const media = vizinhos.reduce((acc, v) => acc + v.valor, 0) / vizinhos.length
     const desvio = Math.abs(x.valor - media)
     if (!pior || desvio > pior.desvio) {
